@@ -34,35 +34,26 @@ st.markdown("""
             margin: 0;
             padding: 0;
             font-family: 'Cinzel', serif;
-            background-color: #000;
+            background-image: url('https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/FUNDO.png?raw=true');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
             color: white;
         }
         .main-container {
             position: relative;
-            background-image: url('https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/FUNDO.png?raw=true');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            padding: 3rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 2rem;
             border-radius: 15px;
             max-width: 900px;
             margin: 2rem auto;
             box-shadow: 0px 0px 15px #000;
             z-index: 1;
         }
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 15px;
-            z-index: 2;
-        }
         .content {
             position: relative;
-            z-index: 3;
+            z-index: 2;
         }
         .title {
             font-size: 3rem;
@@ -91,11 +82,23 @@ st.markdown("""
             margin-bottom: 1.5rem;
         }
         .banner img {
-            width: 80%;
-            max-width: 600px;
+            width: 60%;
+            max-width: 400px;
             height: auto;
             object-fit: cover;
-            border-radius: 15px;
+            border-radius: 10px;
+        }
+        .discord-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        .discord-link img {
+            width: 40px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .discord-link img:hover {
+            transform: scale(1.1);
         }
         .footer {
             margin-top: 4rem;
@@ -103,21 +106,13 @@ st.markdown("""
             font-size: 0.8rem;
             color: gray;
         }
-        .discord-link img {
-            width: 150px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .discord-link img:hover {
-            transform: scale(1.1);
-        }
         @keyframes fadeIn {
             0% { opacity: 0; transform: translateY(10px); }
             100% { opacity: 1; transform: translateY(0); }
         }
         @media screen and (max-width: 600px) {
             .menu { flex-direction: column; align-items: center; }
-            .banner img { width: 100%; }
+            .banner img { width: 80%; }
         }
     </style>
 """, unsafe_allow_html=True)
@@ -126,15 +121,12 @@ st.markdown("""
 # CONTEÚDO DA PÁGINA
 # ========================
 st.markdown("<div class='main-container'>", unsafe_allow_html=True)
-# Camada de overlay para escurecer o fundo
-st.markdown("<div class='overlay'></div>", unsafe_allow_html=True)
-# Conteúdo acima do overlay
 st.markdown("<div class='content'>", unsafe_allow_html=True)
 
 # Lottie animation antes do banner
 st.markdown("""
 <div class='banner'>
-  <lottie-player src='https://assets2.lottiefiles.com/packages/lf20_touohxv0.json' background='transparent' speed='1' style='width:600px; height:300px; margin:auto;' loop autoplay></lottie-player>
+  <lottie-player src='https://assets2.lottiefiles.com/packages/lf20_touohxv0.json' background='transparent' speed='1' style='width:400px; height:200px; margin:auto;' loop autoplay></lottie-player>
 </div>
 """, unsafe_allow_html=True)
 
@@ -146,6 +138,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("<div class='title'>SafeZone</div>", unsafe_allow_html=True)
+
 # MENU
 st.markdown("""
 <div class='menu'>
@@ -203,4 +196,4 @@ with st.expander("🗣️ Deixe seu feedback para a guilda (em breve)"):
 # FOOTER
 st.markdown("<div class='discord-link'><a href='https://discord.gg/FApJNJ4dXU' target='_blank'><img src='https://logodownload.org/wp-content/uploads/2017/11/discord-logo-0.png' alt='Discord'></a></div>", unsafe_allow_html=True)
 st.markdown("<div class='footer'>SafeZone - Guilda BR de Albion Online | Desde 2023 | MANDATORY Alliance</div>", unsafe_allow_html=True)
-st.markdown("</div></div>", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
