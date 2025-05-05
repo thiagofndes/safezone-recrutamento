@@ -11,8 +11,8 @@ UPLOAD_FOLDER = "uploads"
 DB_PATH = "sqlite:///cadastros.db"
 
 # GARANTIR PASTA DE UPLOAD
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 
 # CONEXÃO COM BANCO
 engine = create_engine(DB_PATH)
