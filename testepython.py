@@ -11,7 +11,8 @@ SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/au
 creds_dict = json.loads(st.secrets["GOOGLE_SERVICE_ACCOUNT"])
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, SCOPE)
 client = gspread.authorize(creds)
-sheet = client.open("Recrutamento SafeZone").worksheet("Página1")
+sheet = client.open("Recrutamento SafeZone").sheet1
+
 
 
 # ========================
