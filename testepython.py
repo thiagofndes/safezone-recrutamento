@@ -11,9 +11,10 @@ SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/au
 creds_dict = json.loads(st.secrets["GOOGLE_SERVICE_ACCOUNT"])
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, SCOPE)
 client = gspread.authorize(creds)
-sheet = client.open("Recrutamento SafeZone").sheet1
 
-
+# Use o ID da planilha diretamente para evitar erro de título
+spreadsheet_id = "1xRVuph9Y-6KMnEKmds17llmKYXSoaYTP2WCZkQRYtU0"
+sheet = client.open_by_key(spreadsheet_id).worksheet("Página1")
 
 # ========================
 # TÍTULO E FUNDO
