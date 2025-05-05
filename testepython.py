@@ -30,23 +30,39 @@ st.set_page_config(page_title="SafeZone - Recrutamento", layout="centered")
 st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap');
-        html, body, [class*="css"] {
+        html, body, [class*=\"css\"] {
+            margin: 0;
+            padding: 0;
             font-family: 'Cinzel', serif;
-            background-image: url('https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/FUNDO.png?raw=true');
-            background-size: cover;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            background-position: center;
+            background-color: #000;
             color: white;
         }
         .main-container {
-            background-color: rgba(0,0,0,0.85);
-            padding: 2rem;
+            position: relative;
+            background-image: url('https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/FUNDO.png?raw=true');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            padding: 3rem;
             border-radius: 15px;
             max-width: 900px;
-            margin: auto;
-            box-shadow: 0px 0px 15px #222;
-            animation: fadeIn 1s ease-in-out;
+            margin: 2rem auto;
+            box-shadow: 0px 0px 15px #000;
+            z-index: 1;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            z-index: 2;
+        }
+        .content {
+            position: relative;
+            z-index: 3;
         }
         .title {
             font-size: 3rem;
@@ -73,13 +89,12 @@ st.markdown("""
         .banner {
             text-align: center;
             margin-bottom: 1.5rem;
-            animation: fadeIn 1s ease-in-out;
         }
         .banner img {
-            width: 100%;
-            max-width: 500px;
+            width: 80%;
+            max-width: 600px;
             height: auto;
-            object-fit: contain;
+            object-fit: cover;
             border-radius: 15px;
         }
         .footer {
@@ -102,6 +117,7 @@ st.markdown("""
         }
         @media screen and (max-width: 600px) {
             .menu { flex-direction: column; align-items: center; }
+            .banner img { width: 100%; }
         }
     </style>
 """, unsafe_allow_html=True)
@@ -110,8 +126,12 @@ st.markdown("""
 # CONTEÚDO DA PÁGINA
 # ========================
 st.markdown("<div class='main-container'>", unsafe_allow_html=True)
+# Camada de overlay para escurecer o fundo
+st.markdown("<div class='overlay'></div>", unsafe_allow_html=True)
+# Conteúdo acima do overlay
+st.markdown("<div class='content'>", unsafe_allow_html=True)
 
-# Entrada de animação Lottie antes do banner
+# Lottie animation antes do banner
 st.markdown("""
 <div class='banner'>
   <lottie-player src='https://assets2.lottiefiles.com/packages/lf20_touohxv0.json' background='transparent' speed='1' style='width:600px; height:300px; margin:auto;' loop autoplay></lottie-player>
@@ -126,7 +146,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("<div class='title'>SafeZone</div>", unsafe_allow_html=True)
-
 # MENU
 st.markdown("""
 <div class='menu'>
@@ -138,11 +157,9 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# SEÇÕES COM EXPANDERS
 with st.expander("📌 Sobre a Guilda"):
     st.markdown("**Missão:** Formar uma comunidade madura, respeitosa e com espírito de equipe, focada em PvP e crescimento constante.")
     st.markdown("**Benefícios:** Calls de qualidade, presença em ZVZ com a MANDATORY, apoio ao crescimento de membros novos e veteranos.")
-    # Componente interativo de horário de pico
     peak_br = st.slider("Horário de pico (BR) - Hora", min_value=0, max_value=23, value=19)
     peak_utc = st.slider("Horário de pico (UTC) - Hora", min_value=0, max_value=23, value=22)
     st.markdown(f"**Horários mais ativos:** {peak_br}h às {peak_br+4 if peak_br+4<=23 else peak_br+4-24}h (BR) | {peak_utc}h às {(peak_utc+4)%24}h (UTC)")
@@ -186,4 +203,4 @@ with st.expander("🗣️ Deixe seu feedback para a guilda (em breve)"):
 # FOOTER
 st.markdown("<div class='discord-link'><a href='https://discord.gg/FApJNJ4dXU' target='_blank'><img src='https://logodownload.org/wp-content/uploads/2017/11/discord-logo-0.png' alt='Discord'></a></div>", unsafe_allow_html=True)
 st.markdown("<div class='footer'>SafeZone - Guilda BR de Albion Online | Desde 2023 | MANDATORY Alliance</div>", unsafe_allow_html=True)
-st.markdown("</div>", unsafe_allow_html=True)
+st.markdown("</div></div>", unsafe_allow_html=True)
