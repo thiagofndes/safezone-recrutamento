@@ -20,67 +20,104 @@ if "captcha_key" not in st.session_state:
     )
 
 # ========================
-# 3️⃣ CSS GLOBAL + LOGIN BOX
+# 3️⃣ CSS GLOBAL + LOGIN BOX + LAYOUT RESPONSIVO
 # ========================
 st.markdown("""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap');
+
   html, body, [class*="css"] {
-    margin:0; padding:0; min-height:100vh;
-    font-family:'Cinzel', serif;
+    margin: 0; padding: 0; min-height: 100vh;
+    font-family: 'Cinzel', serif;
   }
   .stApp {
     background: url('https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/FUNDO.png?raw=true')
                 center/cover fixed no-repeat;
-    color:white;
+    color: white;
+    position: relative;
   }
-  /* Login box */
+
+  /* LOGIN BOX */
   .login-box {
     background: rgba(0,0,0,0.8);
     border: 1px solid #e6c300;
     padding: 1rem; border-radius: 8px;
-    box-shadow: 0 0 10px #000; margin-top:1rem;
+    box-shadow: 0 0 10px #000;
+    margin-top: 1rem;
   }
   .login-box .stTextInput>div>div>input {
-    width:100% !important; margin-bottom:0.5rem !important;
-    padding:0.4rem !important; border-radius:4px !important; border:none !important;
+    width: 100% !important;
+    margin-bottom: 0.5rem !important;
+    padding: 0.4rem !important;
+    border-radius: 4px !important;
+    border: none !important;
   }
   .login-box button[kind="formSubmit"] {
-    width:100% !important; margin-top:0.5rem !important;
-    background:#e6c300 !important; color:#000 !important; border:none !important;
-    border-radius:4px !important; font-weight:bold !important;
+    width: 100% !important;
+    margin-top: 0.5rem !important;
+    background: #e6c300 !important;
+    color: #000 !important;
+    border: none !important;
+    border-radius: 4px !important;
+    font-weight: bold !important;
   }
-  .login-links { text-align:center; margin-top:0.5rem; }
+  .login-links { text-align: center; margin-top: 0.5rem; }
   .login-links a {
-    color:#e6c300; text-decoration:none; font-size:0.85rem; margin:0 0.2rem;
+    color: #e6c300; text-decoration: none;
+    font-size: 0.85rem; margin: 0 0.2rem;
   }
-  .login-links a:hover { text-decoration:underline; }
-  /* Banner e layout */
-  .banner { text-align:center; padding:2rem 0 1rem; margin-bottom:1rem; }
-  .banner img { width:50%; max-width:300px; border-radius:10px; }
+  .login-links a:hover { text-decoration: underline; }
+
+  /* BANNER */
+  .banner {
+    text-align: center; padding: 2rem 0 1rem; margin-bottom: 1rem;
+  }
+  .banner img {
+    width: 50%; max-width: 300px;
+    border-radius: 10px;
+  }
+
+  /* MAIN CONTAINER — agora 100% de largura da coluna, alinhado à esquerda */
   .main-container {
-    background:rgba(0,0,0,0.6); padding:2rem; border-radius:12px;
-    max-width:900px; margin:0 auto 2rem; box-shadow:0 0 15px #000;
+    background: rgba(0,0,0,0.6);
+    padding: 2rem; border-radius: 12px;
+    width: 100%;             /* ocupa toda a largura da coluna */
+    margin: 0;                /* alinhado à esquerda */
+    box-shadow: 0 0 15px #000;
   }
+
+  /* TÍTULO E MENU */
   .title {
-    font-size:3rem; text-align:center; color:#e6c300; margin:1rem 0 0.5rem;
+    font-size: 3rem; text-align: center;
+    color: #e6c300; margin: 1rem 0 0.5rem;
   }
   .menu {
-    display:flex; justify-content:center; gap:2rem; margin-bottom:2rem;
+    display: flex; justify-content: center;
+    gap: 2rem; margin-bottom: 2rem;
   }
   .menu a {
-    color:#e6c300; font-weight:bold; text-decoration:none;
+    color: #e6c300; font-weight: bold;
+    text-decoration: none;
   }
-  .menu a:hover { color:#fff; }
-  #sobre, div[data-testid="stExpander"] {
-    background:rgba(0,0,0,0.6)!important;
-    padding:1rem 1.5rem!important; border-radius:12px!important;
-    margin:1.5rem auto!important; max-width:900px!important;
+  .menu a:hover { color: #fff; }
+
+  /* EXPANDERS / SEÇÕES */
+  #sobre,
+  div[data-testid="stExpander"] {
+    background: rgba(0,0,0,0.6) !important;
+    padding: 1rem 1.5rem !important;
+    border-radius: 12px !important;
+    width: 100% !important;     /* expander preenche o container */
+    margin: 1.5rem 0 !important; /* separação vertical */
   }
-  .discord-link { text-align:center; margin:2rem 0; }
-  .discord-link img { width:40px; cursor:pointer; }
-  @media(max-width:600px){
-    .menu { flex-direction:column; }
+
+  /* DISCORD ICON */
+  .discord-link { text-align: center; margin: 2rem 0; }
+  .discord-link img { width: 40px; cursor: pointer; }
+
+  /* RESPONSIVO */
+  @media (max-width: 600px) {
+    .menu { flex-direction: column; }
   }
 </style>
 """, unsafe_allow_html=True)
@@ -90,7 +127,7 @@ st.markdown("""
 # ========================
 col_content, col_login = st.columns([3,1], gap="small")
 
-# — login na coluna direita —
+# — LOGIN na coluna da direita —
 with col_login:
     st.markdown('<div class="login-box">', unsafe_allow_html=True)
     st.markdown("### Login SafeZone", unsafe_allow_html=True)
@@ -113,7 +150,7 @@ with col_login:
     """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# — todo o resto na coluna esquerda —
+# — TODO o resto na coluna da esquerda —
 with col_content:
     # Google Sheets (CRUD)
     SCOPE      = ["https://spreadsheets.google.com/feeds","https://www.googleapis.com/auth/drive"]
@@ -124,7 +161,7 @@ with col_content:
         "1xRVuph9Y-6KMnEKmds17llmKYXSoaYTP2WCZkQRYtU0"
     ).worksheet("Página1")
 
-    # Banner
+    # BANNER
     st.markdown("""
     <div class="banner">
       <img src="https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/BVANNER.png?raw=true"
@@ -132,10 +169,10 @@ with col_content:
     </div>
     """, unsafe_allow_html=True)
 
-    # Bloco preto geral
+    # Abre o container principal
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
-    # Título e menu
+    # TÍTULO E MENU
     st.markdown('<div class="title">SafeZone</div>', unsafe_allow_html=True)
     st.markdown("""
       <div class="menu">
@@ -147,25 +184,25 @@ with col_content:
       </div>
     """, unsafe_allow_html=True)
 
-    # Sobre a Guilda (expander aberto)
+    # SOBRE A GUILDA (expander aberto)
     with st.expander("📌 Sobre a Guilda", expanded=True):
         st.markdown("- **Missão:** Formar comunidade madura, respeitosa e com espírito de equipe focada em PvP.")
         st.markdown("- **Benefícios:** Calls de qualidade, apoio a novos e veteranos.")
         st.markdown("- **Staff:** GM: SafiraSkins | Braço direito: Taigona | Conselho: MateusBrito | Recrutador: TargaryeR0X")
         st.markdown("- **Horários de pico:** BR: 19h-23h | UTC: 22h-02h")
 
-    # Vídeos da Guilda
+    # VÍDEOS DA GUILDA
     with st.expander("🎞️ Vídeos da Guilda"):
         st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 
-    # Depoimento de Membros
+    # DEPOIMENTO DE MEMBROS
     with st.expander("💬 Depoimento de Membros"):
-        st.markdown("**MatheusBritoO:** \"Jogar com a SafeZone é sinônimo de risadas, estratégia e vitória.\"")
-        st.markdown("**TargaryeR0X:** \"O PvP aqui é diferenciado! Os callers são experientes e organizados.\"")
-        st.markdown("**Reduzeh:** \"Minha primeira guilda no Albion! Cada dia é uma nova aventura.\"")
+        st.markdown("**MatheusBritoO:** \"Jogar con a SafeZone é sinônimo de risadas e vitória.\"")
+        st.markdown("**TargaryeR0X:** \"PvP diferenciado! Os callers são experientes e organizados.\"")
+        st.markdown("**Reduzeh:** \"Minha primeira guilda no Albion! Cada dia é uma aventura.\"")
         st.markdown("**Xandinho:** \"Nunca pensei que começar no Albion fosse tão legal.\"")
 
-    # Galeria de Imagens
+    # GALERIA DE IMAGENS
     with st.expander("🖼️ Galeria de Imagens"):
         st.image(
             "https://albiononline.com/assets/images/news/2023-01-AlbionGuildSeason/Winner.jpg",
@@ -176,7 +213,7 @@ with col_content:
             use_column_width=True
         )
 
-    # Formulário de Recrutamento
+    # FORMULÁRIO DE RECRUTAMENTO
     with st.expander("📋 Formulário de Recrutamento"):
         with st.form("recrutamento_form"):
             nome     = st.text_input("🧑 Nome do personagem")
@@ -185,22 +222,22 @@ with col_content:
             fama_pve = st.text_input("🛡️ Fama PVE (ex: 4m, 500k)")
             enviar   = st.form_submit_button("Enviar")
             if enviar and nome and fama_pvp and fama_pve:
-                timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-                sheet.append_row([nome, classe, fama_pvp, fama_pve, timestamp])
+                ts = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+                sheet.append_row([nome, classe, fama_pvp, fama_pve, ts])
                 st.success(f"✅ Cadastro de **{nome}** enviado!")
             elif enviar:
                 st.error("Por favor, preencha todos os campos.")
 
-    # Feedback
+    # FEEDBACK
     with st.expander("🗣️ Deixe seu feedback para a guilda"):
         st.text_input("Seu nome (opcional):")
         st.text_area("Mensagem:")
         st.button("Enviar Feedback")
 
-    # Fecha bloco preto
+    # Fecha o main-container
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # Rodapé
+    # RODAPÉ
     st.markdown("""
       <div class="discord-link">
         <a href="https://discord.gg/FApJNJ4dXU" target="_blank">
