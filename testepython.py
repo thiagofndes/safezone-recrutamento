@@ -85,7 +85,7 @@ st.markdown("""
 with st.expander("🌍 Sobre a Guilda"):
     st.markdown("""
     **🎯 Missão da SafeZone**
-    
+
     Criar um ambiente maduro e organizado para jogadores que desejam evoluir em grupo. Respeitamos o tempo de cada um, priorizamos a união e buscamos excelência sem pressão tóxica. Jogamos com propósito, não por obrigação.
 
     **🛡️ Benefícios para os jogadores:**
@@ -102,13 +102,10 @@ with st.expander("🌍 Sobre a Guilda"):
 # VIDEOS
 with st.expander("🎬 Vídeos da Guilda"):
     st.markdown("Assista ao nosso vídeo mais recente:")
-    st.video("https://www.youtube.com/embed/tgbNymZ7vqY")
+    st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 
 # DEPOIMENTOS
-st.markdown("<div id='depoimentos'></div>", unsafe_allow_html=True)
-st.markdown("## 💬 Depoimentos da Guilda")
-
-with st.container():
+with st.expander("💬 Depoimentos da Guilda"):
     st.markdown("**🧙‍♂️ MatheusBritoO**")
     st.write("\"Jogar com a galera da SafeZone é sempre diversão garantida. A galera é leve, organizada e cada conteúdo vira uma resenha. Mesmo nas runs mais tensas, tem sempre alguém pra fazer a gente rir. É aquele tipo de guilda que faz você querer logar todo dia.\"")
 
