@@ -43,8 +43,8 @@ st.markdown("""
         /* Banner */
         .banner {
             text-align: center;
-            margin: 0;
             padding: 2rem 0 1rem 0;
+            margin-bottom: 1rem;  /* espaçamento abaixo do banner */
         }
         .banner img {
             width: 50%;
@@ -55,13 +55,13 @@ st.markdown("""
             display: inline-block;
         }
 
-        /* BLOCO PRETO atrás de todo o conteúdo textual */
+        /* BLOCO PRETO atrás dos textos */
         .main-container {
             background-color: rgba(0,0,0,0.6);
             padding: 2rem;
             border-radius: 12px;
             max-width: 900px;
-            margin: 2rem auto;
+            margin: 0 auto 2rem auto;  /* sem margin-top para não subir atrás do banner */
             box-shadow: 0 0 15px #000;
         }
 
@@ -88,7 +88,7 @@ st.markdown("""
             color: #fff;
         }
 
-        /* Fundo específico para "Sobre" e cada expander */
+        /* Fundo de “Sobre” e cada expander */
         #sobre,
         div[data-testid="stExpander"] {
             background-color: rgba(0,0,0,0.6) !important;
@@ -149,7 +149,7 @@ st.markdown('<div id="sobre">', unsafe_allow_html=True)
 st.markdown("## Sobre a Guilda")
 st.markdown("- **Missão:** Formar uma comunidade madura, respeitosa e com espírito de equipe, focada em PvP e crescimento constante.")
 st.markdown("- **Benefícios:** Calls de qualidade, presença em ZVZ com a MANDATORY, apoio ao crescimento de membros novos e veteranos.")
-st.markdown("- **Staff:**\n  - GM: SafiraSkins\n  - Braço direito: Taigona\n  - Conselho: MateusBrito\n  - Recrutador: Targaryen")
+st.markdown("- **Staff:**\n  - GM: SafiraSkins\n  - Braço direito: Taigona\n  - Conselho: MateusBrito\n  - Recrutador: TargaryeR0X")
 st.markdown("- **Horários de pico:** BR: 19h - 23h | UTC: 22h - 02h")
 st.markdown("</div>", unsafe_allow_html=True)
 
@@ -177,14 +177,12 @@ with st.expander("📋 Formulário de Recrutamento"):
         fama_pvp = st.text_input("🔥 Fama PVP (ex: 2.5m, 1.2b)")
         fama_pve = st.text_input("🛡️ Fama PVE (ex: 4m, 500k)")
         enviar = st.form_submit_button("🚀 Enviar dados")
-        if enviar:
-            if nome and fama_pvp and fama_pve:
-                timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-                sheet.append_row([nome, classe, fama_pvp, fama_pve, timestamp])
-                st.success(f"✅ Cadastro enviado com sucesso! Bem-vindo(a), {nome}!")
-                st.markdown("[Clique aqui para acessar o Discord da Guilda](https://discord.gg/FApJNJ4dXU)")
-            else:
-                st.error("Por favor, preencha todos os campos obrigatórios.")
+        if enviar and nome and fama_pvp and fama_pve:
+            sheet.append_row([nome, classe, fama_pvp, fama_pve, datetime.now().strftime("%d/%m/%Y %H:%M:%S")])
+            st.success(f"✅ Cadastro enviado com sucesso! Bem-vindo(a), {nome}!")
+            st.markdown("[Clique aqui para acessar o Discord da Guilda](https://discord.gg/FApJNJ4dXU)")
+        elif enviar:
+            st.error("Por favor, preencha todos os campos obrigatórios.")
 
 # Feedback
 with st.expander("🗣️ Deixe seu feedback para a guilda"):
