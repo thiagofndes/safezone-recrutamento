@@ -6,16 +6,22 @@ import random, string
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 
-# 1️⃣ Configuração da página
+# ========================
+# 1️⃣ CONFIGURAÇÃO DA PÁGINA
+# ========================
 st.set_page_config(page_title="SafeZone - Recrutamento", layout="wide")
 
-# 2️⃣ Gera captcha aleatório (um por sessão)
+# ========================
+# 2️⃣ CAPTCHA ALEATÓRIO
+# ========================
 if "captcha_key" not in st.session_state:
     st.session_state.captcha_key = "".join(
         random.choices(string.ascii_uppercase + string.digits, k=5)
     )
 
-# 3️⃣ CSS
+# ========================
+# 3️⃣ CSS GLOBAL + LOGIN BOX
+# ========================
 st.markdown("""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap');
@@ -24,29 +30,36 @@ st.markdown("""
     font-family:'Cinzel', serif;
   }
   .stApp {
-    background: url('https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/FUNDO.png?raw=true') 
+    background: url('https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/FUNDO.png?raw=true')
                 center/cover fixed no-repeat;
     color:white;
   }
-
-  /* login-box */
+  /* Login box */
   .login-box {
     background: rgba(0,0,0,0.8);
     border: 1px solid #e6c300;
     padding: 1rem; border-radius: 8px;
-    box-shadow: 0 0 10px #000;
+    box-shadow: 0 0 10px #000; margin-top:1rem;
+  }
+  .login-box .stTextInput>div>div>input {
+    width:100% !important; margin-bottom:0.5rem !important;
+    padding:0.4rem !important; border-radius:4px !important; border:none !important;
+  }
+  .login-box button[kind="formSubmit"] {
+    width:100% !important; margin-top:0.5rem !important;
+    background:#e6c300 !important; color:#000 !important; border:none !important;
+    border-radius:4px !important; font-weight:bold !important;
   }
   .login-links { text-align:center; margin-top:0.5rem; }
   .login-links a {
     color:#e6c300; text-decoration:none; font-size:0.85rem; margin:0 0.2rem;
   }
   .login-links a:hover { text-decoration:underline; }
-
-  /* banner e layout geral */
-  .banner { text-align:center; padding:2rem 0 1rem; }
+  /* Banner e layout */
+  .banner { text-align:center; padding:2rem 0 1rem; margin-bottom:1rem; }
   .banner img { width:50%; max-width:300px; border-radius:10px; }
   .main-container {
-    background: rgba(0,0,0,0.6); padding:2rem; border-radius:12px;
+    background:rgba(0,0,0,0.6); padding:2rem; border-radius:12px;
     max-width:900px; margin:0 auto 2rem; box-shadow:0 0 15px #000;
   }
   .title {
@@ -61,24 +74,23 @@ st.markdown("""
   .menu a:hover { color:#fff; }
   #sobre, div[data-testid="stExpander"] {
     background:rgba(0,0,0,0.6)!important;
-    padding:1rem 1.5rem!important;
-    border-radius:12px!important;
-    margin:1.5rem auto!important;
-    max-width:900px!important;
+    padding:1rem 1.5rem!important; border-radius:12px!important;
+    margin:1.5rem auto!important; max-width:900px!important;
   }
   .discord-link { text-align:center; margin:2rem 0; }
   .discord-link img { width:40px; cursor:pointer; }
-
   @media(max-width:600px){
-    .menu{flex-direction:column;}
+    .menu { flex-direction:column; }
   }
 </style>
 """, unsafe_allow_html=True)
 
-# 4️⃣ Layout em colunas
+# ========================
+# 4️⃣ LAYOUT EM COLUNAS
+# ========================
 col_content, col_login = st.columns([3,1], gap="small")
 
-# — Login na coluna da direita —
+# — login na coluna direita —
 with col_login:
     st.markdown('<div class="login-box">', unsafe_allow_html=True)
     st.markdown("### Login SafeZone", unsafe_allow_html=True)
@@ -90,7 +102,7 @@ with col_login:
         submit     = st.form_submit_button("Entrar")
         if submit:
             if captcha_in == st.session_state.captcha_key:
-                st.success(f"Bem‐vindo, **{user_in}**!")
+                st.success(f"Bem-vindo, **{user_in}**!")
             else:
                 st.error("Captcha incorreto, tente novamente.")
     st.markdown("""
@@ -101,19 +113,22 @@ with col_login:
     """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# — Tudo o resto na coluna da esquerda —
+# — todo o resto na coluna esquerda —
 with col_content:
-    # Conexão Google Sheets (CRUD)
+    # Google Sheets (CRUD)
     SCOPE      = ["https://spreadsheets.google.com/feeds","https://www.googleapis.com/auth/drive"]
     creds_dict = json.loads(st.secrets["GOOGLE_SERVICE_ACCOUNT"])
     creds      = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, SCOPE)
     client     = gspread.authorize(creds)
-    sheet      = client.open_by_key("1xRVuph9Y-6KMnEKmds17llmKYXSoaYTP2WCZkQRYtU0").worksheet("Página1")
+    sheet      = client.open_by_key(
+        "1xRVuph9Y-6KMnEKmds17llmKYXSoaYTP2WCZkQRYtU0"
+    ).worksheet("Página1")
 
     # Banner
     st.markdown("""
     <div class="banner">
-      <img src="https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/BVANNER.png?raw=true" alt="Banner">
+      <img src="https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/BVANNER.png?raw=true"
+           alt="Banner da Guilda">
     </div>
     """, unsafe_allow_html=True)
 
@@ -132,43 +147,49 @@ with col_content:
       </div>
     """, unsafe_allow_html=True)
 
-    # Sobre a Guilda
-    st.markdown('<div id="sobre">', unsafe_allow_html=True)
-    st.markdown("## Sobre a Guilda")
-    st.markdown("- **Missão:** Formar comunidade madura, respeitosa e com espírito de equipe focada em PvP.")
-    st.markdown("- **Benefícios:** Calls de qualidade, apoio a novos e veteranos.")
-    st.markdown("- **Staff:** GM: SafiraSkins | Braço direito: Taigona | Conselho: MateusBrito | Recrutador: TargaryeR0X")
-    st.markdown("- **Horários de pico:** BR: 19h-23h | UTC: 22h-02h")
-    st.markdown("</div>", unsafe_allow_html=True)
+    # Sobre a Guilda (expander aberto)
+    with st.expander("📌 Sobre a Guilda", expanded=True):
+        st.markdown("- **Missão:** Formar comunidade madura, respeitosa e com espírito de equipe focada em PvP.")
+        st.markdown("- **Benefícios:** Calls de qualidade, apoio a novos e veteranos.")
+        st.markdown("- **Staff:** GM: SafiraSkins | Braço direito: Taigona | Conselho: MateusBrito | Recrutador: TargaryeR0X")
+        st.markdown("- **Horários de pico:** BR: 19h-23h | UTC: 22h-02h")
 
-    # Vídeos
+    # Vídeos da Guilda
     with st.expander("🎞️ Vídeos da Guilda"):
         st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 
-    # Depoimentos
+    # Depoimento de Membros
     with st.expander("💬 Depoimento de Membros"):
-        st.markdown("**MatheusBritoO:** \"Jogar com a SafeZone é sinônimo de risadas e vitória.\"")
-        st.markdown("**TargaryeR0X:** \"PvP diferenciado! Emotion guaranteed.\"")
-        st.markdown("**Reduzeh:** \"Minha primeira guilda no Albion! A aventura começou aqui.\"")
+        st.markdown("**MatheusBritoO:** \"Jogar com a SafeZone é sinônimo de risadas, estratégia e vitória.\"")
+        st.markdown("**TargaryeR0X:** \"O PvP aqui é diferenciado! Os callers são experientes e organizados.\"")
+        st.markdown("**Reduzeh:** \"Minha primeira guilda no Albion! Cada dia é uma nova aventura.\"")
         st.markdown("**Xandinho:** \"Nunca pensei que começar no Albion fosse tão legal.\"")
 
-    # Galeria
+    # Galeria de Imagens
     with st.expander("🖼️ Galeria de Imagens"):
-        st.image("https://albiononline.com/assets/images/news/2023-01-AlbionGuildSeason/Winner.jpg", use_column_width=True)
-        st.image("https://albiononline.com/assets/images/news/2021-Season14/mid.jpg", use_column_width=True)
+        st.image(
+            "https://albiononline.com/assets/images/news/2023-01-AlbionGuildSeason/Winner.jpg",
+            use_column_width=True
+        )
+        st.image(
+            "https://albiononline.com/assets/images/news/2021-Season14/mid.jpg",
+            use_column_width=True
+        )
 
-    # Recrutamento
+    # Formulário de Recrutamento
     with st.expander("📋 Formulário de Recrutamento"):
         with st.form("recrutamento_form"):
             nome     = st.text_input("🧑 Nome do personagem")
             classe   = st.selectbox("⚔️ Classe favorita", ["Melee","Range","Healer","Tank","Suporte"])
-            fama_pvp = st.text_input("🔥 Fama PVP")
-            fama_pve = st.text_input("🛡️ Fama PVE")
+            fama_pvp = st.text_input("🔥 Fama PVP (ex: 2.5m, 1.2b)")
+            fama_pve = st.text_input("🛡️ Fama PVE (ex: 4m, 500k)")
             enviar   = st.form_submit_button("Enviar")
             if enviar and nome and fama_pvp and fama_pve:
-                ts = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-                sheet.append_row([nome, classe, fama_pvp, fama_pve, ts])
-                st.success(f"Cadastro de {nome} enviado!")
+                timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+                sheet.append_row([nome, classe, fama_pvp, fama_pve, timestamp])
+                st.success(f"✅ Cadastro de **{nome}** enviado!")
+            elif enviar:
+                st.error("Por favor, preencha todos os campos.")
 
     # Feedback
     with st.expander("🗣️ Deixe seu feedback para a guilda"):
@@ -176,7 +197,7 @@ with col_content:
         st.text_area("Mensagem:")
         st.button("Enviar Feedback")
 
-    # Fecha container
+    # Fecha bloco preto
     st.markdown("</div>", unsafe_allow_html=True)
 
     # Rodapé
