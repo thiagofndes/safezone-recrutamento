@@ -1,3 +1,9 @@
+import streamlit as st
+
+st.write("🔑 Secrets disponíveis:", list(st.secrets.keys()))
+st.stop()
+
+
 # testepython.py
 import streamlit as st
 import pandas as pd
