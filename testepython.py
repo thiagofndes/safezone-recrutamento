@@ -82,8 +82,8 @@ st.markdown("""
             margin-bottom: 1.5rem;
         }
         .banner img {
-            width: 60%;
-            max-width: 400px;
+            width: 50%;
+            max-width: 300px;
             height: auto;
             object-fit: cover;
             border-radius: 10px;
