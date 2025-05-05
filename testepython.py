@@ -1,133 +1,98 @@
 # testepython.py
 import streamlit as st
-import json
-import gspread
-import random, string
+import json, gspread, random, string
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 
-# ========================
-# 1️⃣ CONFIGURAÇÃO DA PÁGINA
-# ========================
+# 1️⃣ Configuração da página
 st.set_page_config(page_title="SafeZone - Recrutamento", layout="wide")
 
-# ========================
-# 2️⃣ CAPTCHA ALEATÓRIO
-# ========================
+# 2️⃣ Gera um captcha aleatório
 if "captcha_key" not in st.session_state:
-    st.session_state.captcha_key = "".join(
-        random.choices(string.ascii_uppercase + string.digits, k=5)
-    )
+    st.session_state.captcha_key = "".join(random.choices(
+        string.ascii_uppercase + string.digits, k=5
+    ))
 
-# ========================
-# 3️⃣ CSS GLOBAL + LOGIN BOX + LAYOUT RESPONSIVO
-# ========================
+# 3️⃣ CSS global + estilização de expanders e login box
 st.markdown("""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap');
-
   html, body, [class*="css"] {
-    margin: 0; padding: 0; min-height: 100vh;
-    font-family: 'Cinzel', serif;
+    margin:0; padding:0; min-height:100vh;
+    font-family:'Cinzel', serif;
   }
   .stApp {
     background: url('https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/FUNDO.png?raw=true')
                 center/cover fixed no-repeat;
-    color: white;
-    position: relative;
+    color:white;
   }
 
-  /* LOGIN BOX */
+  /* ===== LOGIN BOX ===== */
   .login-box {
     background: rgba(0,0,0,0.8);
     border: 1px solid #e6c300;
     padding: 1rem; border-radius: 8px;
     box-shadow: 0 0 10px #000;
-    margin-top: 1rem;
+    margin-top:1rem;
   }
   .login-box .stTextInput>div>div>input {
-    width: 100% !important;
-    margin-bottom: 0.5rem !important;
-    padding: 0.4rem !important;
-    border-radius: 4px !important;
-    border: none !important;
+    width:100% !important; margin-bottom:0.5rem!important;
+    padding:0.4rem!important; border-radius:4px!important; border:none!important;
   }
   .login-box button[kind="formSubmit"] {
-    width: 100% !important;
-    margin-top: 0.5rem !important;
-    background: #e6c300 !important;
-    color: #000 !important;
-    border: none !important;
-    border-radius: 4px !important;
-    font-weight: bold !important;
+    width:100% !important; margin-top:0.5rem!important;
+    background:#e6c300!important; color:#000!important; border:none!important;
+    border-radius:4px!important; font-weight:bold!important;
   }
-  .login-links { text-align: center; margin-top: 0.5rem; }
+  .login-links { text-align:center; margin-top:0.5rem; }
   .login-links a {
-    color: #e6c300; text-decoration: none;
-    font-size: 0.85rem; margin: 0 0.2rem;
+    color:#e6c300; text-decoration:none; font-size:0.85rem; margin:0 0.2rem;
   }
-  .login-links a:hover { text-decoration: underline; }
+  .login-links a:hover { text-decoration:underline; }
 
-  /* BANNER */
+  /* ===== Banner ===== */
   .banner {
-    text-align: center; padding: 2rem 0 1rem; margin-bottom: 1rem;
+    text-align:center; padding:2rem 0 1rem; margin-bottom:1rem;
   }
   .banner img {
-    width: 50%; max-width: 300px;
-    border-radius: 10px;
+    width:50%; max-width:300px; border-radius:10px;
   }
 
-  /* MAIN CONTAINER — agora 100% de largura da coluna, alinhado à esquerda */
-  .main-container {
-    background: rgba(0,0,0,0.6);
-    padding: 2rem; border-radius: 12px;
-    width: 100%;             /* ocupa toda a largura da coluna */
-    margin: 0;                /* alinhado à esquerda */
-    box-shadow: 0 0 15px #000;
-  }
-
-  /* TÍTULO E MENU */
+  /* ===== Título & Menu ===== */
   .title {
-    font-size: 3rem; text-align: center;
-    color: #e6c300; margin: 1rem 0 0.5rem;
+    font-size:3rem; text-align:center; color:#e6c300; margin:1rem 0 0.5rem;
   }
   .menu {
-    display: flex; justify-content: center;
-    gap: 2rem; margin-bottom: 2rem;
+    display:flex; justify-content:center; gap:2rem; margin-bottom:2rem;
   }
   .menu a {
-    color: #e6c300; font-weight: bold;
-    text-decoration: none;
+    color:#e6c300; font-weight:bold; text-decoration:none;
   }
-  .menu a:hover { color: #fff; }
+  .menu a:hover { color:#fff; }
 
-  /* EXPANDERS / SEÇÕES */
-  #sobre,
+  /* ===== EXPANDERS ===== */
   div[data-testid="stExpander"] {
     background: rgba(0,0,0,0.6) !important;
     padding: 1rem 1.5rem !important;
     border-radius: 12px !important;
-    width: 100% !important;     /* expander preenche o container */
-    margin: 1.5rem 0 !important; /* separação vertical */
+    margin: 1rem auto !important;
+    max-width: 900px !important;
   }
 
-  /* DISCORD ICON */
-  .discord-link { text-align: center; margin: 2rem 0; }
-  .discord-link img { width: 40px; cursor: pointer; }
+  /* ===== DISCORD ICON ===== */
+  .discord-link { text-align:center; margin:2rem 0; }
+  .discord-link img { width:40px; cursor:pointer; }
 
-  /* RESPONSIVO */
-  @media (max-width: 600px) {
-    .menu { flex-direction: column; }
+  @media(max-width:600px){
+    .menu { flex-direction:column; }
   }
 </style>
 """, unsafe_allow_html=True)
 
-# ========================
-# 4️⃣ LAYOUT EM COLUNAS
-# ========================
+# 4️⃣ Layout em colunas (conteúdo / login)
 col_content, col_login = st.columns([3,1], gap="small")
 
-# — LOGIN na coluna da direita —
+# — login na coluna direita —
 with col_login:
     st.markdown('<div class="login-box">', unsafe_allow_html=True)
     st.markdown("### Login SafeZone", unsafe_allow_html=True)
@@ -139,7 +104,7 @@ with col_login:
         submit     = st.form_submit_button("Entrar")
         if submit:
             if captcha_in == st.session_state.captcha_key:
-                st.success(f"Bem-vindo, **{user_in}**!")
+                st.success(f"Bem‐vindo, **{user_in}**!")
             else:
                 st.error("Captcha incorreto, tente novamente.")
     st.markdown("""
@@ -150,9 +115,9 @@ with col_login:
     """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# — TODO o resto na coluna da esquerda —
+# — TODO o resto na coluna esquerda —
 with col_content:
-    # Google Sheets (CRUD)
+    # — Google Sheets (CRUD) —
     SCOPE      = ["https://spreadsheets.google.com/feeds","https://www.googleapis.com/auth/drive"]
     creds_dict = json.loads(st.secrets["GOOGLE_SERVICE_ACCOUNT"])
     creds      = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, SCOPE)
@@ -161,18 +126,14 @@ with col_content:
         "1xRVuph9Y-6KMnEKmds17llmKYXSoaYTP2WCZkQRYtU0"
     ).worksheet("Página1")
 
-    # BANNER
+    # — Banner —
     st.markdown("""
     <div class="banner">
-      <img src="https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/BVANNER.png?raw=true"
-           alt="Banner da Guilda">
+      <img src="https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/BVANNER.png?raw=true" alt="Banner">
     </div>
     """, unsafe_allow_html=True)
 
-    # Abre o container principal
-    st.markdown('<div class="main-container">', unsafe_allow_html=True)
-
-    # TÍTULO E MENU
+    # — Título & Menu —
     st.markdown('<div class="title">SafeZone</div>', unsafe_allow_html=True)
     st.markdown("""
       <div class="menu">
@@ -184,25 +145,25 @@ with col_content:
       </div>
     """, unsafe_allow_html=True)
 
-    # SOBRE A GUILDA (expander aberto)
+    # — Sobre a Guilda (expander) —
     with st.expander("📌 Sobre a Guilda", expanded=True):
         st.markdown("- **Missão:** Formar comunidade madura, respeitosa e com espírito de equipe focada em PvP.")
         st.markdown("- **Benefícios:** Calls de qualidade, apoio a novos e veteranos.")
         st.markdown("- **Staff:** GM: SafiraSkins | Braço direito: Taigona | Conselho: MateusBrito | Recrutador: TargaryeR0X")
         st.markdown("- **Horários de pico:** BR: 19h-23h | UTC: 22h-02h")
 
-    # VÍDEOS DA GUILDA
+    # — Vídeos da Guilda —
     with st.expander("🎞️ Vídeos da Guilda"):
         st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 
-    # DEPOIMENTO DE MEMBROS
+    # — Depoimento de Membros —
     with st.expander("💬 Depoimento de Membros"):
-        st.markdown("**MatheusBritoO:** \"Jogar con a SafeZone é sinônimo de risadas e vitória.\"")
-        st.markdown("**TargaryeR0X:** \"PvP diferenciado! Os callers são experientes e organizados.\"")
+        st.markdown("**MatheusBritoO:** \"Jogar com a SafeZone é sinônimo de risadas e vitória.\"")
+        st.markdown("**TargaryeR0X:** \"O PvP aqui é diferenciado! Os callers são experientes e organizados.\"")
         st.markdown("**Reduzeh:** \"Minha primeira guilda no Albion! Cada dia é uma aventura.\"")
         st.markdown("**Xandinho:** \"Nunca pensei que começar no Albion fosse tão legal.\"")
 
-    # GALERIA DE IMAGENS
+    # — Galeria de Imagens —
     with st.expander("🖼️ Galeria de Imagens"):
         st.image(
             "https://albiononline.com/assets/images/news/2023-01-AlbionGuildSeason/Winner.jpg",
@@ -213,7 +174,7 @@ with col_content:
             use_column_width=True
         )
 
-    # FORMULÁRIO DE RECRUTAMENTO
+    # — Formulário de Recrutamento —
     with st.expander("📋 Formulário de Recrutamento"):
         with st.form("recrutamento_form"):
             nome     = st.text_input("🧑 Nome do personagem")
@@ -228,16 +189,13 @@ with col_content:
             elif enviar:
                 st.error("Por favor, preencha todos os campos.")
 
-    # FEEDBACK
+    # — Feedback —
     with st.expander("🗣️ Deixe seu feedback para a guilda"):
         st.text_input("Seu nome (opcional):")
         st.text_area("Mensagem:")
         st.button("Enviar Feedback")
 
-    # Fecha o main-container
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    # RODAPÉ
+    # — Rodapé —
     st.markdown("""
       <div class="discord-link">
         <a href="https://discord.gg/FApJNJ4dXU" target="_blank">
