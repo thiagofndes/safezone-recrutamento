@@ -22,7 +22,7 @@ sheet = client.open_by_key(spreadsheet_id).worksheet("Página1")
 # ========================
 # CONFIGURAÇÃO DE PÁGINA
 # ========================
-st.set_page_config(page_title="SafeZone - Recrutamento", layout="centered")
+st.set_page_config(page_title="SafeZone - Recrutamento", layout="wide")
 
 # ========================
 # ESTILIZAÇÃO COM CSS EMBUTIDO
@@ -31,14 +31,19 @@ st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap');
     html, body, [class*="css"] {
-        margin: 0; padding: 0;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        min-height: 100vh;
         font-family: 'Cinzel', serif;
+        color: white;
+    }
+    .stApp {
         background-image: url('https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/FUNDO.png?raw=true');
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-position: center;
-        color: white;
     }
     .time-display {
         position: fixed;
@@ -50,15 +55,27 @@ st.markdown("""
         border-radius: 8px;
         z-index: 99;
     }
+    .banner {
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+    .banner img {
+        width: 50%;
+        max-width: 300px;
+        height: auto;
+        object-fit: cover;
+        border-radius: 10px;
+    }
     .main-container {
         position: relative;
         background-color: rgba(0, 0, 0, 0.7);
         padding: 2rem;
         border-radius: 15px;
         max-width: 900px;
-        margin: 4rem auto 2rem;
+        margin: -20vh auto 2rem;
         box-shadow: 0px 0px 15px #000;
-        z-index: 1;
+        z-index: 10;
     }
     .title {
         font-size: 3rem;
@@ -80,17 +97,6 @@ st.markdown("""
     .menu a:hover {
         color: #fff;
         transition: color 0.3s ease-in-out;
-    }
-    .banner {
-        text-align: center;
-        margin-bottom: 1.5rem;
-    }
-    .banner img {
-        width: 50%;
-        max-width: 300px;
-        height: auto;
-        object-fit: cover;
-        border-radius: 10px;
     }
     .about-section {
         margin-bottom: 2rem;
@@ -117,8 +123,9 @@ st.markdown("""
         transform: scale(1.1);
     }
     @media screen and (max-width: 600px) {
+        .banner img { width: 70%; max-width: 200px; }
+        .main-container { margin-top: -15vh; padding: 1rem; }
         .menu { flex-direction: column; align-items: center; }
-        .banner img { width: 80%; }
         .time-display { right: 1rem; font-size: 0.9rem; }
     }
 </style>
@@ -127,26 +134,13 @@ st.markdown("""
 # Exibição fixa de horários de pico
 st.markdown("<div class='time-display'>BR: 19h - 23h | UTC: 22h - 02h</div>", unsafe_allow_html=True)
 
+# Banner principal com <img>
+st.markdown("<div class='banner'><img src='https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/BVANNER.png?raw=true' alt='Banner da Guilda'></div>", unsafe_allow_html=True)
+
 # ========================
-# CONTEÚDO DA PÁGINA
+# CONTEÚDO DA PÁGINA PRINCIPAL SOBRE A GUILD
 # ========================
 st.markdown("<div class='main-container'>", unsafe_allow_html=True)
-
-# Animação Lottie antes do banner
-st.markdown("""
-<div class='banner'>
-  <lottie-player src='https://assets2.lottiefiles.com/packages/lf20_touohxv0.json' background='transparent' speed='1' style='width:400px; height:200px; margin:auto;' loop autoplay></lottie-player>
-</div>
-""", unsafe_allow_html=True)
-
-# Banner principal
-st.markdown("""
-<div class='banner'>
-    <img src='https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/BVANNER.png?raw=true' alt='Banner da Guilda'>
-</div>
-""", unsafe_allow_html=True)
-
-# Título
 st.markdown("<div class='title'>SafeZone</div>", unsafe_allow_html=True)
 
 # Menu de navegação
@@ -170,20 +164,17 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Expanders restantes
+# Expanders para restante do conteúdo
 with st.expander("🎞️ Vídeos da Guilda", expanded=False):
     st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
-
 with st.expander("💬 Depoimentos da Guilda", expanded=False):
     st.markdown("**MatheusBritoO:** \"Jogar com a SafeZone é sinônimo de risadas, estratégia e vitória. Aqui eu realmente me divirto.\"")
     st.markdown("**TargaryeR0X:** \"O PvP aqui é diferenciado! Os callers são experientes e organizados, a emoção é garantida.\"")
     st.markdown("**Reduzeh:** \"Minha primeira guilda no Albion! O pessoal me ajudou desde o começo, e cada dia é uma nova aventura.\"")
     st.markdown("**Xandinho:** \"Nunca pensei que começar no Albion pudesse ser tão legal. A galera aqui me acolheu de verdade.\"")
-
 with st.expander("🖼️ Galeria de Imagens", expanded=False):
     st.image("https://albiononline.com/assets/images/news/2023-01-AlbionGuildSeason/Winner.jpg", use_column_width=True)
     st.image("https://albiononline.com/assets/images/news/2021-Season14/mid.jpg", use_column_width=True)
-
 with st.expander("📋 Formulário de Recrutamento", expanded=False):
     with st.form(key="recrutamento_form"):
         nome = st.text_input("🧑 Nome do personagem")
@@ -191,7 +182,6 @@ with st.expander("📋 Formulário de Recrutamento", expanded=False):
         fama_pvp = st.text_input("🔥 Fama PVP (ex: 2.5m, 1.2b)")
         fama_pve = st.text_input("🛡️ Fama PVE (ex: 4m, 500k)")
         enviar = st.form_submit_button("🚀 Enviar dados")
-
         if enviar:
             if nome and fama_pvp and fama_pve:
                 data_envio = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -201,13 +191,11 @@ with st.expander("📋 Formulário de Recrutamento", expanded=False):
             else:
                 st.error("Por favor, preencha todos os campos obrigatórios.")
 
-# Feedback
+# Feedback e footer
 with st.expander("🗣️ Deixe seu feedback para a guilda (em breve)"):
     st.text_input("Seu nome (opcional):")
     st.text_area("Mensagem:")
     st.button("Enviar Feedback")
-
-# Discord & Footer
 st.markdown("<div class='discord-link'><a href='https://discord.gg/FApJNJ4dXU' target='_blank'><img src='https://logodownload.org/wp-content/uploads/2017/11/discord-logo-0.png' alt='Discord'></a></div>", unsafe_allow_html=True)
 st.markdown("<div class='footer'>SafeZone - Guilda BR de Albion Online | Desde 2023 | MANDATORY Alliance</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
