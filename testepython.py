@@ -22,17 +22,17 @@ sheet = client.open_by_key(spreadsheet_id).worksheet("Página1")
 st.set_page_config(page_title="SafeZone - Recrutamento", layout="centered")
 
 # ========================
-# CSS CUSTOMIZADO PARA ESTILO E MENU
+# ESTILIZAÇÃO
 # ========================
 st.markdown("""
     <style>
-        html, body, [class*="css"]  {
+        html, body, [class*="css"] {
             font-family: 'Segoe UI', sans-serif;
             background-color: #0d1117;
             color: white;
         }
         .main-container {
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.85));
+            background-color: rgba(0,0,0,0.85);
             padding: 2rem;
             border-radius: 15px;
             max-width: 800px;
@@ -42,162 +42,105 @@ st.markdown("""
         .title {
             font-size: 2.5rem;
             text-align: center;
-            margin-bottom: 10px;
             color: #e6c300;
+            margin-bottom: 1rem;
         }
         .menu {
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
             margin-bottom: 2rem;
         }
         .menu a {
-            margin: 0 1rem;
-            text-decoration: none;
-            font-weight: bold;
             color: #e6c300;
-            cursor: pointer;
-        }
-        .section {
-            margin-top: 30px;
-        }
-        .collapsible {
-            background-color: #20232a;
-            color: white;
-            cursor: pointer;
-            padding: 18px;
-            width: 100%;
-            border: none;
-            text-align: left;
-            outline: none;
-            font-size: 15px;
-        }
-        .active, .collapsible:hover {
-            background-color: #333;
-        }
-        .content {
-            padding: 0 18px;
-            display: none;
-            overflow: hidden;
-            background-color: #1e1e1e;
-            border-left: 5px solid #e6c300;
-        }
-        .discord-button {
-            display: block;
-            text-align: center;
-            margin-top: 30px;
-        }
-        .discord-button a {
-            background-color: #5865F2;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
             font-weight: bold;
-        }
-        .discord-button a:hover {
-            background-color: #4752c4;
+            text-decoration: none;
         }
         @media screen and (max-width: 600px) {
-            .main-container {
-                padding: 1rem;
+            .menu {
+                flex-direction: column;
+                align-items: center;
             }
         }
     </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const items = document.getElementsByClassName("collapsible");
-            for (let i = 0; i < items.length; i++) {
-                items[i].addEventListener("click", function () {
-                    this.classList.toggle("active");
-                    const content = this.nextElementSibling;
-                    if (content.style.display === "block") {
-                        content.style.display = "none";
-                    } else {
-                        content.style.display = "block";
-                    }
-                });
-            }
-        });
-    </script>
 """, unsafe_allow_html=True)
 
 # ========================
-# CONTEÚDO DA LANDING PAGE
+# CONTEÚDO DA PÁGINA
 # ========================
 st.markdown("<div class='main-container'>", unsafe_allow_html=True)
 st.markdown("<div class='title'>SafeZone</div>", unsafe_allow_html=True)
 
-# Menu
+# MENU
 st.markdown("""
 <div class='menu'>
     <a href="#sobre">SOBRE</a>
-    <a href="#videos">VIDEOS</a>
+    <a href="#videos">VÍDEOS</a>
+    <a href="#depoimentos">DEPOIMENTOS</a>
     <a href="#recrutamento">RECRUTAMENTO</a>
 </div>
 """, unsafe_allow_html=True)
 
-# SOBRE
-titulo_sobre = "<div class='section' id='sobre'>"
-conteudo_sobre = """
-<button class="collapsible">🌍 Sobre a Guilda</button>
-<div class="content">
-    <p><strong>🎯 Missão da SafeZone</strong><br>
-    Criar um ambiente maduro e organizado para jogadores que desejam evoluir em grupo. Aqui, respeitamos o tempo de cada um, priorizamos a união e buscamos excelência sem pressão tóxica. Jogamos com propósito, não por obrigação.</p>
+# SOBRE A GUILDA
+with st.expander("🌍 Sobre a Guilda"):
+    st.markdown("""
+    **🎯 Missão da SafeZone**
+    
+    Criar um ambiente maduro e organizado para jogadores que desejam evoluir em grupo. Respeitamos o tempo de cada um, priorizamos a união e buscamos excelência sem pressão tóxica. Jogamos com propósito, não por obrigação.
 
-    <p><strong>🛡️ O que você encontrará aqui:</strong></p>
-    <ul>
-        <li>✅ ZVZ com a aliança MANDATORY</li>
-        <li>✅ PVP small scale em outposts, Avalons e open world</li>
-        <li>✅ Fama em grupo e World Boss</li>
-        <li>✅ Reuniões de coleta organizadas</li>
-        <li>✅ Mentoria para novos jogadores</li>
-        <li>✅ Discord ativo e bem estruturado</li>
-    </ul>
+    **🛡️ Benefícios para os jogadores:**
+    - ✅ ZVZ com a aliança MANDATORY
+    - ✅ PVP small scale em outposts, Avalons e open world
+    - ✅ Fama em grupo e World Boss
+    - ✅ Reuniões de coleta organizadas
+    - ✅ Mentoria para novos jogadores
+    - ✅ Discord ativo e bem estruturado
 
-    <p>Se você procura um time onde todos têm voz, onde a organização é prioridade e a diversão anda junto com o crescimento, a SafeZone é seu lugar!</p>
-</div>
-</div>
-"""
-st.markdown(titulo_sobre, unsafe_allow_html=True)
-st.markdown(conteudo_sobre, unsafe_allow_html=True)
+    Se você procura um time onde todos têm voz, onde a organização é prioridade e a diversão anda junto com o crescimento, a SafeZone é seu lugar!
+    """)
 
 # VIDEOS
-st.markdown("<div class='section' id='videos'>", unsafe_allow_html=True)
-st.markdown("""
-<button class="collapsible">🎬 Vídeos da Guilda</button>
-<div class="content">
-    <p>Assista ao nosso vídeo mais recente:</p>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/tgbNymZ7vqY" frameborder="0" allowfullscreen></iframe>
-</div>
-""", unsafe_allow_html=True)
-st.markdown("</div>", unsafe_allow_html=True)
+with st.expander("🎬 Vídeos da Guilda"):
+    st.markdown("Assista ao nosso vídeo mais recente:")
+    st.video("https://www.youtube.com/embed/tgbNymZ7vqY")
+
+# DEPOIMENTOS
+st.markdown("<div id='depoimentos'></div>", unsafe_allow_html=True)
+st.markdown("## 💬 Depoimentos da Guilda")
+
+with st.container():
+    st.markdown("**🧙‍♂️ MatheusBritoO**")
+    st.write("\"Jogar com a galera da SafeZone é sempre diversão garantida. A galera é leve, organizada e cada conteúdo vira uma resenha. Mesmo nas runs mais tensas, tem sempre alguém pra fazer a gente rir. É aquele tipo de guilda que faz você querer logar todo dia.\"")
+
+    st.markdown("**⚔️ TargaryeR0X**")
+    st.write("\"Fazer PVP com a SafeZone é viciante. O caller tem experiência de sobra, sabe exatamente quando engajar, recuar e até ensinar quem tá começando. Me sinto seguro, mesmo nos fights mais intensos. A organização é absurda, parece até time profissional.\"")
+
+    st.markdown("**🌱 Reduzeh**")
+    st.write("\"Comecei no Albion sem conhecer nada, e já de cara fui acolhido pela SafeZone. Aprendi a coletar, famear, montar build… tudo com o pessoal me ajudando. Hoje, cada dia no jogo é uma aventura nova. Melhor começo impossível!\"")
+
+    st.markdown("**🔰 Xandinho**")
+    st.write("\"Essa foi minha primeira guilda e, sinceramente, não poderia ter caído em lugar melhor. A galera é unida, prestativa e te dá suporte pra tudo — desde build até onde famear. Me senti em casa desde o primeiro dia. SafeZone é família.\"")
 
 # RECRUTAMENTO
-st.markdown("<div class='section' id='recrutamento'>", unsafe_allow_html=True)
-st.markdown("""
-<button class="collapsible">📋 Formulário de Recrutamento</button>
-<div class="content">
-""", unsafe_allow_html=True)
+with st.expander("📋 Formulário de Recrutamento"):
+    with st.form(key="recrutamento_form"):
+        nome = st.text_input("🧑 Nome do personagem")
+        classe = st.selectbox("⚔️ Classe favorita", ["Melee", "Range", "Healer", "Tank", "Suporte"])
+        fama_pvp = st.text_input("🔥 Fama PVP (ex: 2.5m, 1.2b)")
+        fama_pve = st.text_input("🛡️ Fama PVE (ex: 4m, 500k)")
+        enviar = st.form_submit_button("🚀 Enviar dados")
 
-with st.form(key="recrutamento_form"):
-    nome = st.text_input("🧑 Nome do personagem")
-    classe = st.selectbox("⚔️ Classe favorita", ["Melee", "Range", "Healer", "Tank", "Suporte"])
-    fama_pvp = st.text_input("🔥 Fama PVP (ex: 2.5m, 1.2b)")
-    fama_pve = st.text_input("🛡️ Fama PVE (ex: 4m, 500k)")
-    enviar = st.form_submit_button("🚀 Enviar dados")
-
-    if enviar:
-        if nome and fama_pvp and fama_pve:
-            data_envio = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-            sheet.append_row([nome, classe, fama_pvp, fama_pve, data_envio])
-            st.success(f"✅ Cadastro enviado com sucesso! Bem-vindo(a), {nome}!")
-        else:
-            st.error("Por favor, preencha todos os campos obrigatórios.")
-
-st.markdown("""
-<div class='discord-button'>
-    <a href='https://discord.gg/FApJNJ4dXU' target='_blank'>Entrar no Discord da Guilda</a>
-</div>
-</div>
-""", unsafe_allow_html=True)
+        if enviar:
+            if nome and fama_pvp and fama_pve:
+                data_envio = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+                sheet.append_row([nome, classe, fama_pvp, fama_pve, data_envio])
+                st.success(f"✅ Cadastro enviado com sucesso! Bem-vindo(a), {nome}!")
+                st.markdown("""
+                    <div style='text-align: center; margin-top: 20px;'>
+                        <a href='https://discord.gg/FApJNJ4dXU' target='_blank' style='background-color: #5865F2; padding: 10px 20px; border-radius: 8px; color: white; font-weight: bold; text-decoration: none;'>Entrar no Discord da Guilda</a>
+                    </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.error("Por favor, preencha todos os campos obrigatórios.")
 
 st.markdown("</div>", unsafe_allow_html=True)  # fecha main-container
