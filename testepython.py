@@ -22,11 +22,10 @@ sheet = client.open_by_key(spreadsheet_id).worksheet("Página1")
 st.set_page_config(page_title="SafeZone - Recrutamento", layout="centered")
 
 # ========================
-# CSS CUSTOMIZADO PARA ESTILO
+# CSS CUSTOMIZADO PARA ESTILO E MENU
 # ========================
 st.markdown("""
     <style>
-        * { box-sizing: border-box; }
         html, body, [class*="css"]  {
             font-family: 'Segoe UI', sans-serif;
             background-color: #0d1117;
@@ -36,7 +35,7 @@ st.markdown("""
             background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.85));
             padding: 2rem;
             border-radius: 15px;
-            max-width: 600px;
+            max-width: 800px;
             margin: auto;
             box-shadow: 0px 0px 15px #222;
         }
@@ -46,17 +45,40 @@ st.markdown("""
             margin-bottom: 10px;
             color: #e6c300;
         }
-        .subtitle {
+        .menu {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 2rem;
         }
-        .info-box {
-            margin-top: 40px;
-            padding: 1rem;
-            background: rgba(255,255,255,0.05);
+        .menu a {
+            margin: 0 1rem;
+            text-decoration: none;
+            font-weight: bold;
+            color: #e6c300;
+            cursor: pointer;
+        }
+        .section {
+            margin-top: 30px;
+        }
+        .collapsible {
+            background-color: #20232a;
+            color: white;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+        }
+        .active, .collapsible:hover {
+            background-color: #333;
+        }
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #1e1e1e;
             border-left: 5px solid #e6c300;
-            border-radius: 8px;
-            font-size: 0.95rem;
         }
         .discord-button {
             display: block;
@@ -80,6 +102,22 @@ st.markdown("""
             }
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const items = document.getElementsByClassName("collapsible");
+            for (let i = 0; i < items.length; i++) {
+                items[i].addEventListener("click", function () {
+                    this.classList.toggle("active");
+                    const content = this.nextElementSibling;
+                    if (content.style.display === "block") {
+                        content.style.display = "none";
+                    } else {
+                        content.style.display = "block";
+                    }
+                });
+            }
+        });
+    </script>
 """, unsafe_allow_html=True)
 
 # ========================
@@ -87,20 +125,45 @@ st.markdown("""
 # ========================
 st.markdown("<div class='main-container'>", unsafe_allow_html=True)
 st.markdown("<div class='title'>SafeZone</div>", unsafe_allow_html=True)
-st.markdown("<div class='subtitle'>Formulário de Recrutamento</div>", unsafe_allow_html=True)
 
+# Menu
 st.markdown("""
-    <div class='info-box'>
-        <strong>🌍 Sobre a Guilda:</strong><br>
-        A SafeZone é uma guilda brasileira voltada para jogadores adultos que prezam pelo respeito, crescimento coletivo e diversão. Nosso foco inclui ZVZs com a Mandatory, PVP small scale, coleta, fame em World Boss, Avalons e caçadas. Procuramos jogadores comprometidos, que jogam com propósito, respeitando o time e valorizando a evolução conjunta.
-        <br><br>
-        Se você quer jogar com organização e propósito, aqui é o seu lugar.
-    </div>
+<div class='menu'>
+    <a href="#sobre">SOBRE</a>
+    <a href="#videos">VIDEOS</a>
+    <a href="#recrutamento">RECRUTAMENTO</a>
+</div>
 """, unsafe_allow_html=True)
 
-# ========================
-# FORMULÁRIO DE RECRUTAMENTO
-# ========================
+# SOBRE
+st.markdown("<div class='section' id='sobre'>", unsafe_allow_html=True)
+st.markdown("""
+<button class="collapsible">🌍 Sobre a Guilda</button>
+<div class="content">
+    <p>A SafeZone é uma guilda brasileira voltada para jogadores adultos que prezam pelo respeito, crescimento coletivo e diversão.
+    Nosso foco inclui ZVZs com a Mandatory, PVP small scale, coleta, fame em World Boss, Avalons e caçadas. Procuramos jogadores comprometidos, que jogam com propósito, respeitando o time e valorizando a evolução conjunta.</p>
+    <p>Se você quer jogar com organização e propósito, aqui é o seu lugar.</p>
+</div>
+""", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
+
+# VIDEOS
+st.markdown("<div class='section' id='videos'>", unsafe_allow_html=True)
+st.markdown("""
+<button class="collapsible">🎬 Vídeos da Guilda</button>
+<div class="content">
+    <p>Em breve adicionaremos clipes e momentos marcantes da guilda SafeZone no Albion Online.</p>
+</div>
+""", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
+
+# RECRUTAMENTO
+st.markdown("<div class='section' id='recrutamento'>", unsafe_allow_html=True)
+st.markdown("""
+<button class="collapsible">📋 Formulário de Recrutamento</button>
+<div class="content">
+""", unsafe_allow_html=True)
+
 with st.form(key="recrutamento_form"):
     nome = st.text_input("🧑 Nome do personagem")
     classe = st.selectbox("⚔️ Classe favorita", ["Melee", "Range", "Healer", "Tank", "Suporte"])
@@ -116,13 +179,11 @@ with st.form(key="recrutamento_form"):
         else:
             st.error("Por favor, preencha todos os campos obrigatórios.")
 
-# ========================
-# LINK PARA DISCORD
-# ========================
 st.markdown("""
 <div class='discord-button'>
     <a href='https://discord.gg/FApJNJ4dXU' target='_blank'>Entrar no Discord da Guilda</a>
 </div>
+</div>
 """, unsafe_allow_html=True)
 
-st.markdown("</div>", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)  # fecha main-container
