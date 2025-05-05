@@ -5,175 +5,144 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 
 # ========================
-# CONFIGURAÇÃO DO GOOGLE SHEETS
+# CONFIG GOOGLE SHEETS
 # ========================
 SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 creds_dict = json.loads(st.secrets["GOOGLE_SERVICE_ACCOUNT"])
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, SCOPE)
 client = gspread.authorize(creds)
-spreadsheet_id = "1xRVuph9Y-6KMnEKmds17llmKYXSoaYTP2WCZkQRYtU0"
-sheet = client.open_by_key(spreadsheet_id).worksheet("Página1")
+sheet = client.open_by_key("1xRVuph9Y-6KMnEKmds17llmKYXSoaYTP2WCZkQRYtU0").worksheet("Página1")
 
 # ========================
-# CONFIGURAÇÃO DE PÁGINA
+# CONFIG PÁGINA
 # ========================
 st.set_page_config(page_title="SafeZone - Recrutamento", layout="wide")
 
 # ========================
-# ESTILIZAÇÃO CSS
+# CSS
 # ========================
 st.markdown("""
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap');
-
-        html, body, [class*="css"] {
-            font-family: 'Cinzel', serif;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-        }
-
-        /* Fundo geral */
-        .stApp {
-            background-image: url('https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/FUNDO.png?raw=true');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            color: white;
-        }
-
-        /* Banner full-width */
-        .banner {
-            width: 100vw;
-            height: 40vh;
-            background-image: url('https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/BVANNER.png?raw=true');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-
-        /* Título e menu */
-        .title {
-            font-size: 3rem;
-            text-align: center;
-            color: #e6c300;
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-        }
-        .menu {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        .menu a {
-            color: #e6c300;
-            font-weight: bold;
-            text-decoration: none;
-        }
-        .menu a:hover {
-            color: #fff;
-        }
-
-        /* Seção fixa Sobre a Guilda */
-        .sobre {
-            background-color: rgba(0,0,0,0.6);
-            padding: 2rem 3rem;
-            border-radius: 12px;
-            max-width: 900px;
-            margin: auto;
-            color: #fff;
-        }
-
-        /* Ícone Discord pequeno e centralizado */
-        .discord-link {
-            text-align: center;
-            margin-top: 2rem;
-        }
-        .discord-link img {
-            width: 40px;
-            height: auto;
-            cursor: pointer;
-        }
-
-        /* Responsivo */
-        @media (max-width: 600px) {
-            .menu { flex-direction: column; }
-            .banner { height: 30vh; }
-        }
-    </style>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap');
+    html, body, [class*="css"] {
+        font-family: 'Cinzel', serif;
+        margin:0; padding:0; min-height:100vh;
+    }
+    /* fundo geral */
+    .stApp {
+        background: url('https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/FUNDO.png?raw=true') center/cover fixed no-repeat;
+        color: #fff;
+    }
+    /* BLOCO PRETO atrás dos textos */
+    .main-container {
+        background-color: rgba(0,0,0,0.6);
+        padding: 2rem;
+        border-radius: 12px;
+        max-width: 900px;
+        margin: 2rem auto;
+        box-shadow: 0 0 15px #000;
+    }
+    /* banner */
+    .banner {
+        width:100vw; height:40vh;
+        background: url('https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/BVANNER.png?raw=true') center/contain no-repeat;
+    }
+    /* título e menu */
+    .title {
+        font-size:3rem; text-align:center; color:#e6c300; margin-top:1rem;
+    }
+    .menu {
+        display:flex; justify-content:center; gap:2rem; margin-bottom:2rem;
+    }
+    .menu a {
+        color:#e6c300; font-weight:bold; text-decoration:none;
+    }
+    .menu a:hover { color:#fff; }
+    /* discord */
+    .discord-link {
+        text-align:center; margin:2rem 0;
+    }
+    .discord-link img {
+        width:40px; height:auto;
+    }
+    @media (max-width:600px) {
+        .banner { height:30vh; }
+        .menu { flex-direction:column; }
+    }
+</style>
 """, unsafe_allow_html=True)
 
 # ========================
-# CONTEÚDO DO SITE
+# CONTEÚDO
 # ========================
 
-# Banner
+# Banner full-width
 st.markdown("<div class='banner'></div>", unsafe_allow_html=True)
+
+# Tudo que é texto fica dentro do BLOCO PRETO
+st.markdown("<div class='main-container'>", unsafe_allow_html=True)
 
 # Título e menu
 st.markdown("<div class='title'>SafeZone</div>", unsafe_allow_html=True)
 st.markdown("""
-    <div class='menu'>
-        <a href="#sobre">SOBRE</a>
-        <a href="#videos">VÍDEOS</a>
-        <a href="#depoimentos">DEPOIMENTOS</a>
-        <a href="#galeria">GALERIA</a>
-        <a href="#recrutamento">RECRUTAMENTO</a>
-    </div>
+<div class='menu'>
+  <a href="#sobre">SOBRE</a>
+  <a href="#videos">VÍDEOS</a>
+  <a href="#depoimentos">DEPOIMENTOS</a>
+  <a href="#galeria">GALERIA</a>
+  <a href="#recrutamento">RECRUTAMENTO</a>
+</div>
 """, unsafe_allow_html=True)
 
-# Sobre a Guilda (fixo, sem expander)
-st.markdown('<div id="sobre" class="sobre">', unsafe_allow_html=True)
+# Sobre a Guilda (agora fixa)
+st.markdown('<div id="sobre">', unsafe_allow_html=True)
 st.markdown("## Sobre a Guilda")
-st.markdown("**Missão:** Formar uma comunidade madura, respeitosa e com espírito de equipe, focada em PvP e crescimento constante.")
-st.markdown("**Benefícios:** Calls de qualidade, presença em ZVZ com a MANDATORY, apoio ao crescimento de membros novos e veteranos.")
-st.markdown("**Staff:**\n- GM: SafiraSkins\n- Braço direito: Taigona\n- Conselho: MateusBrito\n- Recrutador: Targaryen")
-st.markdown("**Horários de pico:** BR: 19h - 23h | UTC: 22h - 02h")
+st.markdown("- **Missão:** Formar uma comunidade madura, respeitosa e com espírito de equipe, focada em PvP e crescimento constante.")
+st.markdown("- **Benefícios:** Calls de qualidade, presença em ZVZ com a MANDATORY, apoio ao crescimento de membros novos e veteranos.")
+st.markdown("- **Staff:** GM: SafiraSkins | Braço direito: Taigona | Conselho: MateusBrito | Recrutador: Targaryen")
+st.markdown("- **Horários de pico:** BR: 19h - 23h | UTC: 22h - 02h")
 st.markdown("</div>", unsafe_allow_html=True)
 
-# Expanders
+# Vídeos
 with st.expander("🎞️ Vídeos da Guilda"):
     st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 
+# Depoimentos
 with st.expander("💬 Depoimentos da Guilda"):
-    st.markdown("**MatheusBritoO:** \"Jogar com a SafeZone é sinônimo de risadas, estratégia e vitória.\"")
-    st.markdown("**TargaryeR0X:** \"O PvP aqui é diferenciado! Os callers são experientes e organizados.\"")
-    st.markdown("**Reduzeh:** \"Minha primeira guilda no Albion foi incrível.\"")
-    st.markdown("**Xandinho:** \"A SafeZone me acolheu de verdade desde o primeiro dia.\"")
+    st.markdown("> **MatheusBritoO:** \"Jogar com a SafeZone é sinônimo de risadas, estratégia e vitória.\"")
+    st.markdown("> **TargaryeR0X:** \"O PvP aqui é diferenciado! Os callers são experientes e organizados.\"")
+    st.markdown("> **Reduzeh:** \"Minha primeira guilda no Albion foi incrível.\"")
+    st.markdown("> **Xandinho:** \"A SafeZone me acolheu de verdade desde o primeiro dia.\"")
 
+# Galeria
 with st.expander("🖼️ Galeria de Imagens"):
     st.image("https://albiononline.com/assets/images/news/2023-01-AlbionGuildSeason/Winner.jpg", use_column_width=True)
     st.image("https://albiononline.com/assets/images/news/2021-Season14/mid.jpg", use_column_width=True)
 
+# Formulário de Recrutamento
 with st.expander("📋 Formulário de Recrutamento"):
-    with st.form(key="recrutamento_form"):
+    with st.form(key="form"):
         nome = st.text_input("🧑 Nome do personagem")
-        classe = st.selectbox("⚔️ Classe favorita", ["Melee", "Range", "Healer", "Tank", "Suporte"])
-        fama_pvp = st.text_input("🔥 Fama PVP (ex: 2.5m, 1.2b)")
-        fama_pve = st.text_input("🛡️ Fama PVE (ex: 4m, 500k)")
-        enviar = st.form_submit_button("🚀 Enviar dados")
+        classe = st.selectbox("⚔️ Classe favorita", ["Melee","Range","Healer","Tank","Suporte"])
+        fama_pvp = st.text_input("🔥 Fama PVP (ex: 2.5m)")
+        fama_pve = st.text_input("🛡️ Fama PVE (ex: 4m)")
+        enviar = st.form_submit_button("🚀 Enviar")
+        if enviar and nome and fama_pvp and fama_pve:
+            sheet.append_row([nome, classe, fama_pvp, fama_pve, datetime.now().strftime("%d/%m/%Y %H:%M:%S")])
+            st.success(f"✅ Bem-vindo(a), {nome}!")
+            st.markdown("[Discord](https://discord.gg/FApJNJ4dXU)")
 
-        if enviar:
-            if nome and fama_pvp and fama_pve:
-                data_envio = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-                sheet.append_row([nome, classe, fama_pvp, fama_pve, data_envio])
-                st.success(f"✅ Cadastro enviado com sucesso! Bem-vindo(a), {nome}!")
-                st.markdown("[Clique aqui para acessar o Discord da Guilda](https://discord.gg/FApJNJ4dXU)")
-            else:
-                st.error("Por favor, preencha todos os campos obrigatórios.")
+# Fecha o BLOCO PRETO
+st.markdown("</div>", unsafe_allow_html=True)
 
-# Discord e footer
+# Rodapé sem bloco preto
 st.markdown("""
-    <div class="discord-link">
-        <a href="https://discord.gg/FApJNJ4dXU" target="_blank">
-            <img src="https://logodownload.org/wp-content/uploads/2017/11/discord-logo-0.png" alt="Discord">
-        </a>
-    </div>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-    <div style="text-align:center; margin:2rem 0; color:gray; font-size:0.8rem;">
-        SafeZone – Guilda BR de Albion Online | Desde 2023 | MANDATORY Alliance
-    </div>
+<div class="discord-link">
+  <a href="https://discord.gg/FApJNJ4dXU" target="_blank">
+    <img src="https://logodownload.org/wp-content/uploads/2017/11/discord-logo-0.png" alt="Discord">
+  </a>
+</div>
+<div style="text-align:center; color:gray; font-size:0.8rem; margin-bottom:2rem;">
+  SafeZone – Guilda BR de Albion Online | Desde 2023 | MANDATORY Alliance
+</div>
 """, unsafe_allow_html=True)
