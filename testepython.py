@@ -13,7 +13,7 @@ if "captcha_key" not in st.session_state:
         random.choices(string.ascii_uppercase + string.digits, k=5)
     )
 
-# 3️⃣ CSS global + estilização de expanders e login box
+# 3️⃣ CSS global + ajustes de espaçamento
 st.markdown("""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap');
@@ -31,57 +31,58 @@ st.markdown("""
   .login-box {
     background: rgba(0,0,0,0.8);
     border: 1px solid #e6c300;
-    padding: 1rem; border-radius: 8px;
+    padding: 0.8rem; border-radius: 8px;
     box-shadow: 0 0 10px #000;
-    margin-top:1rem;
+    margin-top:0.5rem;
   }
   .login-box .stTextInput>div>div>input {
-    width:100% !important; margin-bottom:0.5rem!important;
-    padding:0.4rem!important; border-radius:4px!important; border:none!important;
+    margin-bottom:0.4rem !important;
+    padding:0.3rem !important;
+    border-radius:4px !important;
+    border:none !important;
   }
   .login-box button[kind="formSubmit"] {
-    width:100% !important; margin-top:0.5rem!important;
-    background:#e6c300!important; color:#000!important; border:none!important;
-    border-radius:4px!important; font-weight:bold!important;
+    margin-top:0.4rem !important;
+    padding:0.4rem !important;
   }
-  .login-links { text-align:center; margin-top:0.5rem; }
-  .login-links a {
-    color:#e6c300; text-decoration:none; font-size:0.85rem; margin:0 0.2rem;
-  }
-  .login-links a:hover { text-decoration:underline; }
+  .login-links { margin-top:0.4rem; }
+  .login-links a { margin:0 0.1rem; font-size:0.8rem; }
 
   /* BANNER */
-  .banner { text-align:center; padding:2rem 0 1rem; margin-bottom:1rem; }
-  .banner img { width:50%; max-width:300px; border-radius:10px; }
+  .banner {
+    padding:1rem 0 0.5rem;
+    margin-bottom:0.5rem;
+  }
+  .banner img {
+    max-width:300px;
+    width:45%;
+    border-radius:10px;
+  }
 
   /* TÍTULO & MENU */
   .title {
-    font-size:3rem; text-align:center; color:#e6c300; margin:1rem 0 0.5rem;
+    font-size:2.5rem; margin:0.8rem 0 0.4rem;
   }
   .menu {
-    display:flex; justify-content:center; gap:2rem; margin-bottom:2rem;
+    gap:1.5rem; margin-bottom:0.8rem;
   }
-  .menu a {
-    color:#e6c300; font-weight:bold; text-decoration:none;
-  }
-  .menu a:hover { color:#fff; }
 
   /* EXPANDERS */
   div[data-testid="stExpander"] {
     background: rgba(0,0,0,0.6) !important;
-    padding: 1rem 1.5rem !important;
-    border-radius: 12px !important;
-    margin: 1rem 0 !important;
-    width: 100% !important;
+    padding: 0.6rem 1rem !important;
+    border-radius: 10px !important;
+    margin: 0.6rem 0 !important;
+    max-width:900px !important;
   }
 
   /* DISCORD ICON */
-  .discord-link { text-align:left; margin:2rem 0; }
-  .discord-link img { width:40px; cursor:pointer; }
+  .discord-link { text-align:left; margin:1rem 0; }
+  .discord-link img { width:35px; }
 
   @media(max-width:600px){
-    .menu { flex-direction:column; }
-    .login-box { margin-top:0.5rem; }
+    .menu { flex-direction:column; gap:1rem; }
+    .login-box { margin-top:0.3rem; }
   }
 </style>
 """, unsafe_allow_html=True)
@@ -156,20 +157,14 @@ with col_content:
     # — Depoimento de Membros —
     with st.expander("💬 Depoimento de Membros"):
         st.markdown("**MatheusBritoO:** \"Jogar com a SafeZone é sinônimo de risadas e vitória.\"")
-        st.markdown("**TargaryeR0X:** \"O PvP aqui é diferenciado! Os callers são experientes e organizados.\"")
-        st.markdown("**Reduzeh:** \"Minha primeira guilda no Albion! Cada dia é uma aventura.\"")
-        st.markdown("**Xandinho:** \"Nunca pensei que começar no Albion fosse tão legal.\"")
+        st.markdown("**TargaryeR0X:** \"O PvP aqui é diferenciado!\"")
+        st.markdown("**Reduzeh:** \"Minha primeira guilda no Albion!\"")
+        st.markdown("**Xandinho:** \"Albion nunca foi tão legal.\"")
 
     # — Galeria de Imagens —
     with st.expander("🖼️ Galeria de Imagens"):
-        st.image(
-            "https://albiononline.com/assets/images/news/2023-01-AlbionGuildSeason/Winner.jpg",
-            use_column_width=True
-        )
-        st.image(
-            "https://albiononline.com/assets/images/news/2021-Season14/mid.jpg",
-            use_column_width=True
-        )
+        st.image("https://albiononline.com/assets/images/news/2023-01-AlbionGuildSeason/Winner.jpg", use_column_width=True)
+        st.image("https://albiononline.com/assets/images/news/2021-Season14/mid.jpg", use_column_width=True)
 
     # — Formulário de Recrutamento —
     with st.expander("📋 Formulário de Recrutamento"):
@@ -199,7 +194,7 @@ with col_content:
           <img src="https://logodownload.org/wp-content/uploads/2017/11/discord-logo-0.png" alt="Discord">
         </a>
       </div>
-      <div style="text-align:left;color:gray;font-size:0.8rem;margin-bottom:2rem;">
+      <div style="text-align:left;color:gray;font-size:0.8rem;margin-bottom:1rem;">
         SafeZone – Guilda BR de Albion Online | Desde 2023 | MANDATORY Alliance
       </div>
     """, unsafe_allow_html=True)
