@@ -45,16 +45,6 @@ st.markdown("""
         background-attachment: fixed;
         background-position: center;
     }
-    .time-display {
-        position: fixed;
-        top: 1rem;
-        right: 2rem;
-        font-size: 1rem;
-        background: rgba(0,0,0,0.6);
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        z-index: 99;
-    }
     .banner {
         text-align: center;
         margin: 0;
@@ -126,13 +116,9 @@ st.markdown("""
         .banner img { width: 70%; max-width: 200px; }
         .main-container { margin-top: -15vh; padding: 1rem; }
         .menu { flex-direction: column; align-items: center; }
-        .time-display { right: 1rem; font-size: 0.9rem; }
     }
 </style>
 """, unsafe_allow_html=True)
-
-# Exibição fixa de horários de pico
-st.markdown("<div class='time-display'>BR: 19h - 23h | UTC: 22h - 02h</div>", unsafe_allow_html=True)
 
 # Banner principal com <img>
 st.markdown("<div class='banner'><img src='https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/BVANNER.png?raw=true' alt='Banner da Guilda'></div>", unsafe_allow_html=True)
@@ -154,12 +140,13 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Seção fixa Sobre a Guilda
+# Seção fixa Sobre a Guilda com horário incluído
 st.markdown("""
 <div class='about-section' id='sobre'>
   <h2>Sobre a Guilda</h2>
   <p><strong>Missão:</strong> Formar uma comunidade madura, respeitosa e com espírito de equipe, focada em PvP e crescimento constante.</p>
   <p><strong>Benefícios:</strong> Calls de qualidade, presença em ZVZ com a MANDATORY, apoio ao crescimento de membros novos e veteranos.</p>
+  <p><strong>Horários de pico:</strong> BR: 19h - 23h | UTC: 22h - 02h</p>
   <p><strong>Staff:</strong><br>- GM: SafiraSkins<br>- Braço direito: Taigona<br>- Conselho: MateusBrito<br>- Recrutador: Targaryen</p>
 </div>
 """, unsafe_allow_html=True)
@@ -196,6 +183,7 @@ with st.expander("🗣️ Deixe seu feedback para a guilda (em breve)"):
     st.text_input("Seu nome (opcional):")
     st.text_area("Mensagem:")
     st.button("Enviar Feedback")
+
 st.markdown("<div class='discord-link'><a href='https://discord.gg/FApJNJ4dXU' target='_blank'><img src='https://logodownload.org/wp-content/uploads/2017/11/discord-logo-0.png' alt='Discord'></a></div>", unsafe_allow_html=True)
 st.markdown("<div class='footer'>SafeZone - Guilda BR de Albion Online | Desde 2023 | MANDATORY Alliance</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
