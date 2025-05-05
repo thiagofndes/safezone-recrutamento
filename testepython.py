@@ -7,7 +7,10 @@ from datetime import datetime
 # ========================
 # CONFIGURAÇÃO DO GOOGLE SHEETS COM SEGREDOS
 # ========================
-SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+SCOPE = [
+    "https://spreadsheets.google.com/feeds",
+    "https://www.googleapis.com/auth/drive"
+]
 creds_dict = json.loads(st.secrets["GOOGLE_SERVICE_ACCOUNT"])
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, SCOPE)
 client = gspread.authorize(creds)
@@ -22,7 +25,7 @@ sheet = client.open_by_key(spreadsheet_id).worksheet("Página1")
 st.set_page_config(page_title="SafeZone - Recrutamento", layout="centered")
 
 # ========================
-# ESTILIZAÇÃO
+# ESTILIZAÇÃO COM CSS EMBUTIDO
 # ========================
 st.markdown("""
     <style>
@@ -43,6 +46,7 @@ st.markdown("""
             max-width: 900px;
             margin: auto;
             box-shadow: 0px 0px 15px #222;
+            animation: fadeIn 1s ease-in-out;
         }
         .title {
             font-size: 3rem;
@@ -55,19 +59,27 @@ st.markdown("""
             justify-content: center;
             gap: 2rem;
             margin-bottom: 2rem;
+            animation: fadeIn 1s ease-in-out;
         }
         .menu a {
             color: #e6c300;
             font-weight: bold;
             text-decoration: none;
         }
+        .menu a:hover {
+            color: #fff;
+            transition: color 0.3s ease-in-out;
+        }
         .banner {
             text-align: center;
             margin-bottom: 1.5rem;
+            animation: fadeIn 1s ease-in-out;
         }
         .banner img {
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
+            height: auto;
+            object-fit: contain;
             border-radius: 15px;
         }
         .footer {
@@ -76,11 +88,20 @@ st.markdown("""
             font-size: 0.8rem;
             color: gray;
         }
+        .discord-link img {
+            width: 150px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .discord-link img:hover {
+            transform: scale(1.1);
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
         @media screen and (max-width: 600px) {
-            .menu {
-                flex-direction: column;
-                align-items: center;
-            }
+            .menu { flex-direction: column; align-items: center; }
         }
     </style>
 """, unsafe_allow_html=True)
@@ -90,6 +111,14 @@ st.markdown("""
 # ========================
 st.markdown("<div class='main-container'>", unsafe_allow_html=True)
 
+# Entrada de animação Lottie antes do banner
+st.markdown("""
+<div class='banner'>
+  <lottie-player src='https://assets2.lottiefiles.com/packages/lf20_touohxv0.json' background='transparent' speed='1' style='width:600px; height:300px; margin:auto;' loop autoplay></lottie-player>
+</div>
+""", unsafe_allow_html=True)
+
+# Banner principal
 st.markdown("""
 <div class='banner'>
     <img src='https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/BVANNER.png?raw=true' alt='Banner da Guilda'>
@@ -113,11 +142,14 @@ st.markdown("""
 with st.expander("📌 Sobre a Guilda"):
     st.markdown("**Missão:** Formar uma comunidade madura, respeitosa e com espírito de equipe, focada em PvP e crescimento constante.")
     st.markdown("**Benefícios:** Calls de qualidade, presença em ZVZ com a MANDATORY, apoio ao crescimento de membros novos e veteranos.")
-    st.markdown("**Horários mais ativos:** 19h às 23h (horário BR) | 22h às 02h (horário UTC do Albion)")
+    # Componente interativo de horário de pico
+    peak_br = st.slider("Horário de pico (BR) - Hora", min_value=0, max_value=23, value=19)
+    peak_utc = st.slider("Horário de pico (UTC) - Hora", min_value=0, max_value=23, value=22)
+    st.markdown(f"**Horários mais ativos:** {peak_br}h às {peak_br+4 if peak_br+4<=23 else peak_br+4-24}h (BR) | {peak_utc}h às {(peak_utc+4)%24}h (UTC)")
     st.markdown("**Staff:**\n- GM: SafiraSkins\n- Braço direito: Taigona\n- Conselho: MateusBrito\n- Recrutador: Targaryen")
 
 with st.expander("🎞️ Vídeos da Guilda"):
-    st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")  # Vídeo exemplo
+    st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 
 with st.expander("💬 Depoimentos da Guilda"):
     st.markdown("**MatheusBritoO:** \"Jogar com a SafeZone é sinônimo de risadas, estratégia e vitória. Aqui eu realmente me divirto.\"")
@@ -152,6 +184,6 @@ with st.expander("🗣️ Deixe seu feedback para a guilda (em breve)"):
     st.button("Enviar Feedback")
 
 # FOOTER
+st.markdown("<div class='discord-link'><a href='https://discord.gg/FApJNJ4dXU' target='_blank'><img src='https://logodownload.org/wp-content/uploads/2017/11/discord-logo-0.png' alt='Discord'></a></div>", unsafe_allow_html=True)
 st.markdown("<div class='footer'>SafeZone - Guilda BR de Albion Online | Desde 2023 | MANDATORY Alliance</div>", unsafe_allow_html=True)
-
 st.markdown("</div>", unsafe_allow_html=True)
