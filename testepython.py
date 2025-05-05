@@ -26,8 +26,9 @@ st.set_page_config(page_title="SafeZone - Recrutamento", layout="centered")
 # ========================
 st.markdown("""
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap');
         html, body, [class*="css"] {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Cinzel', serif;
             background-color: #0d1117;
             color: white;
         }
@@ -35,12 +36,12 @@ st.markdown("""
             background-color: rgba(0,0,0,0.85);
             padding: 2rem;
             border-radius: 15px;
-            max-width: 800px;
+            max-width: 900px;
             margin: auto;
             box-shadow: 0px 0px 15px #222;
         }
         .title {
-            font-size: 2.5rem;
+            font-size: 3rem;
             text-align: center;
             color: #e6c300;
             margin-bottom: 1rem;
@@ -56,6 +57,20 @@ st.markdown("""
             font-weight: bold;
             text-decoration: none;
         }
+        .banner {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .banner img {
+            width: 100%;
+            border-radius: 15px;
+        }
+        .footer {
+            margin-top: 4rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: gray;
+        }
         @media screen and (max-width: 600px) {
             .menu {
                 flex-direction: column;
@@ -69,6 +84,13 @@ st.markdown("""
 # CONTEÚDO DA PÁGINA
 # ========================
 st.markdown("<div class='main-container'>", unsafe_allow_html=True)
+
+st.markdown("""
+<div class='banner'>
+    <img src='https://cdn.albiononline.com/uploads/media/default/media/battle-royale-1920x1080_1552300566.jpg' alt='Banner da Guilda'>
+</div>
+""", unsafe_allow_html=True)
+
 st.markdown("<div class='title'>SafeZone</div>", unsafe_allow_html=True)
 
 # MENU
@@ -102,21 +124,22 @@ with st.expander("🌍 Sobre a Guilda"):
 # VIDEOS
 with st.expander("🎬 Vídeos da Guilda"):
     st.markdown("Assista ao nosso vídeo mais recente:")
-    st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+    st.video("https://www.youtube.com/watch?v=1Ne1hqOXKKI")
 
 # DEPOIMENTOS
 with st.expander("💬 Depoimentos da Guilda"):
-    st.markdown("**🧙‍♂️ MatheusBritoO**")
-    st.write("\"Jogar com a galera da SafeZone é sempre diversão garantida. A galera é leve, organizada e cada conteúdo vira uma resenha. Mesmo nas runs mais tensas, tem sempre alguém pra fazer a gente rir. É aquele tipo de guilda que faz você querer logar todo dia.\"")
+    with st.container():
+        st.markdown("**🧙‍♂️ MatheusBritoO**")
+        st.success("\"Jogar com a galera da SafeZone é sempre diversão garantida. A galera é leve, organizada e cada conteúdo vira uma resenha. Mesmo nas runs mais tensas, tem sempre alguém pra fazer a gente rir. É aquele tipo de guilda que faz você querer logar todo dia.\"")
 
-    st.markdown("**⚔️ TargaryeR0X**")
-    st.write("\"Fazer PVP com a SafeZone é viciante. O caller tem experiência de sobra, sabe exatamente quando engajar, recuar e até ensinar quem tá começando. Me sinto seguro, mesmo nos fights mais intensos. A organização é absurda, parece até time profissional.\"")
+        st.markdown("**⚔️ TargaryeR0X**")
+        st.info("\"Fazer PVP com a SafeZone é viciante. O caller tem experiência de sobra, sabe exatamente quando engajar, recuar e até ensinar quem tá começando. Me sinto seguro, mesmo nos fights mais intensos. A organização é absurda, parece até time profissional.\"")
 
-    st.markdown("**🌱 Reduzeh**")
-    st.write("\"Comecei no Albion sem conhecer nada, e já de cara fui acolhido pela SafeZone. Aprendi a coletar, famear, montar build… tudo com o pessoal me ajudando. Hoje, cada dia no jogo é uma aventura nova. Melhor começo impossível!\"")
+        st.markdown("**🌱 Reduzeh**")
+        st.warning("\"Comecei no Albion sem conhecer nada, e já de cara fui acolhido pela SafeZone. Aprendi a coletar, famear, montar build… tudo com o pessoal me ajudando. Hoje, cada dia no jogo é uma aventura nova. Melhor começo impossível!\"")
 
-    st.markdown("**🔰 Xandinho**")
-    st.write("\"Essa foi minha primeira guilda e, sinceramente, não poderia ter caído em lugar melhor. A galera é unida, prestativa e te dá suporte pra tudo — desde build até onde famear. Me senti em casa desde o primeiro dia. SafeZone é família.\"")
+        st.markdown("**🔰 Xandinho**")
+        st.success("\"Essa foi minha primeira guilda e, sinceramente, não poderia ter caído em lugar melhor. A galera é unida, prestativa e te dá suporte pra tudo — desde build até onde famear. Me senti em casa desde o primeiro dia. SafeZone é família.\"")
 
 # RECRUTAMENTO
 with st.expander("📋 Formulário de Recrutamento"):
@@ -139,5 +162,11 @@ with st.expander("📋 Formulário de Recrutamento"):
                 """, unsafe_allow_html=True)
             else:
                 st.error("Por favor, preencha todos os campos obrigatórios.")
+
+st.markdown("""
+<div class='footer'>
+    SafeZone - Guilda BR de Albion Online | Desde 2023 | MANDATORY Alliance
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)  # fecha main-container
