@@ -35,7 +35,8 @@ st.markdown("""
 
         /* Fundo geral */
         .stApp {
-            background: url('https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/FUNDO.png?raw=true') center/cover fixed no-repeat;
+            background: url('https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/FUNDO.png?raw=true')
+                        center/cover fixed no-repeat;
             color: white;
         }
 
@@ -54,7 +55,7 @@ st.markdown("""
             display: inline-block;
         }
 
-        /* BLOCO PRETO atrás dos textos */
+        /* BLOCO PRETO atrás de todo o conteúdo textual */
         .main-container {
             background-color: rgba(0,0,0,0.6);
             padding: 2rem;
@@ -87,6 +88,16 @@ st.markdown("""
             color: #fff;
         }
 
+        /* Fundo específico para "Sobre" e cada expander */
+        #sobre,
+        div[data-testid="stExpander"] {
+            background-color: rgba(0,0,0,0.6) !important;
+            padding: 1rem 1.5rem !important;
+            border-radius: 12px !important;
+            margin: 1.5rem auto !important;
+            max-width: 900px !important;
+        }
+
         /* Ícone Discord */
         .discord-link {
             text-align: center;
@@ -113,11 +124,12 @@ st.markdown("""
 # Banner
 st.markdown("""
     <div class="banner">
-        <img src="https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/BVANNER.png?raw=true" alt="Banner da Guilda">
+        <img src="https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/BVANNER.png?raw=true"
+             alt="Banner da Guilda">
     </div>
 """, unsafe_allow_html=True)
 
-# Abre o BLOCO PRETO
+# BLOCO PRETO que engloba todo o conteúdo textual (exceto rodapé)
 st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
 # Título e menu
@@ -126,33 +138,33 @@ st.markdown("""
     <div class="menu">
         <a href="#sobre">SOBRE</a>
         <a href="#videos">VÍDEOS</a>
-        <a href="#depoimentos">DEPOIMENTOS</a>
+        <a href="#depoimento-de-membros">DEPOIMENTO DE MEMBROS</a>
         <a href="#galeria">GALERIA</a>
         <a href="#recrutamento">RECRUTAMENTO</a>
     </div>
 """, unsafe_allow_html=True)
 
-# Sobre a Guilda (fixo)
+# Sobre a Guilda
 st.markdown('<div id="sobre">', unsafe_allow_html=True)
 st.markdown("## Sobre a Guilda")
-st.markdown("**Missão:** Formar uma comunidade madura, respeitosa e com espírito de equipe, focada em PvP e crescimento constante.")
-st.markdown("**Benefícios:** Calls de qualidade, presença em ZVZ com a MANDATORY, apoio ao crescimento de membros novos e veteranos.")
-st.markdown("**Staff:**\n- GM: SafiraSkins\n- Braço direito: Taigona\n- Conselho: MateusBrito\n- Recrutador: Targaryen")
-st.markdown("**Horários de pico:** BR: 19h - 23h | UTC: 22h - 02h")
+st.markdown("- **Missão:** Formar uma comunidade madura, respeitosa e com espírito de equipe, focada em PvP e crescimento constante.")
+st.markdown("- **Benefícios:** Calls de qualidade, presença em ZVZ com a MANDATORY, apoio ao crescimento de membros novos e veteranos.")
+st.markdown("- **Staff:**\n  - GM: SafiraSkins\n  - Braço direito: Taigona\n  - Conselho: MateusBrito\n  - Recrutador: Targaryen")
+st.markdown("- **Horários de pico:** BR: 19h - 23h | UTC: 22h - 02h")
 st.markdown("</div>", unsafe_allow_html=True)
 
-# Vídeos
+# Vídeos da Guilda
 with st.expander("🎞️ Vídeos da Guilda"):
     st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 
-# Depoimentos
-with st.expander("💬 Depoimentos da Guilda"):
+# Depoimento de Membros
+with st.expander("💬 Depoimento de Membros"):
     st.markdown("**MatheusBritoO:** \"Jogar com a SafeZone é sinônimo de risadas, estratégia e vitória. Aqui eu realmente me divirto.\"")
     st.markdown("**TargaryeR0X:** \"O PvP aqui é diferenciado! Os callers são experientes e organizados, a emoção é garantida.\"")
     st.markdown("**Reduzeh:** \"Minha primeira guilda no Albion! O pessoal me ajudou desde o começo, e cada dia é uma nova aventura.\"")
     st.markdown("**Xandinho:** \"Nunca pensei que começar no Albion pudesse ser tão legal. A galera aqui me acolheu de verdade.\"")
 
-# Galeria
+# Galeria de Imagens
 with st.expander("🖼️ Galeria de Imagens"):
     st.image("https://albiononline.com/assets/images/news/2023-01-AlbionGuildSeason/Winner.jpg", use_column_width=True)
     st.image("https://albiononline.com/assets/images/news/2021-Season14/mid.jpg", use_column_width=True)
@@ -180,7 +192,7 @@ with st.expander("🗣️ Deixe seu feedback para a guilda"):
     st.text_area("Mensagem:")
     st.button("Enviar Feedback")
 
-# Fecha o BLOCO PRETO
+# Fecha BLOCO PRETO
 st.markdown("</div>", unsafe_allow_html=True)
 
 # Rodapé (sem bloco preto)
