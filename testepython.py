@@ -136,23 +136,37 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # SOBRE
-st.markdown("<div class='section' id='sobre'>", unsafe_allow_html=True)
-st.markdown("""
+titulo_sobre = "<div class='section' id='sobre'>"
+conteudo_sobre = """
 <button class="collapsible">🌍 Sobre a Guilda</button>
 <div class="content">
-    <p>A SafeZone é uma guilda brasileira voltada para jogadores adultos que prezam pelo respeito, crescimento coletivo e diversão.
-    Nosso foco inclui ZVZs com a Mandatory, PVP small scale, coleta, fame em World Boss, Avalons e caçadas. Procuramos jogadores comprometidos, que jogam com propósito, respeitando o time e valorizando a evolução conjunta.</p>
-    <p>Se você quer jogar com organização e propósito, aqui é o seu lugar.</p>
+    <p><strong>🎯 Missão da SafeZone</strong><br>
+    Criar um ambiente maduro e organizado para jogadores que desejam evoluir em grupo. Aqui, respeitamos o tempo de cada um, priorizamos a união e buscamos excelência sem pressão tóxica. Jogamos com propósito, não por obrigação.</p>
+
+    <p><strong>🛡️ O que você encontrará aqui:</strong></p>
+    <ul>
+        <li>✅ ZVZ com a aliança MANDATORY</li>
+        <li>✅ PVP small scale em outposts, Avalons e open world</li>
+        <li>✅ Fama em grupo e World Boss</li>
+        <li>✅ Reuniões de coleta organizadas</li>
+        <li>✅ Mentoria para novos jogadores</li>
+        <li>✅ Discord ativo e bem estruturado</li>
+    </ul>
+
+    <p>Se você procura um time onde todos têm voz, onde a organização é prioridade e a diversão anda junto com o crescimento, a SafeZone é seu lugar!</p>
 </div>
-""", unsafe_allow_html=True)
-st.markdown("</div>", unsafe_allow_html=True)
+</div>
+"""
+st.markdown(titulo_sobre, unsafe_allow_html=True)
+st.markdown(conteudo_sobre, unsafe_allow_html=True)
 
 # VIDEOS
 st.markdown("<div class='section' id='videos'>", unsafe_allow_html=True)
 st.markdown("""
 <button class="collapsible">🎬 Vídeos da Guilda</button>
 <div class="content">
-    <p>Em breve adicionaremos clipes e momentos marcantes da guilda SafeZone no Albion Online.</p>
+    <p>Assista ao nosso vídeo mais recente:</p>
+    <iframe width="100%" height="315" src="https://www.youtube.com/embed/tgbNymZ7vqY" frameborder="0" allowfullscreen></iframe>
 </div>
 """, unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
