@@ -9,9 +9,9 @@ st.set_page_config(page_title="SafeZone - Recrutamento", layout="wide")
 
 # 2️⃣ Gera um captcha aleatório
 if "captcha_key" not in st.session_state:
-    st.session_state.captcha_key = "".join(random.choices(
-        string.ascii_uppercase + string.digits, k=5
-    ))
+    st.session_state.captcha_key = "".join(
+        random.choices(string.ascii_uppercase + string.digits, k=5)
+    )
 
 # 3️⃣ CSS global + estilização de expanders e login box
 st.markdown("""
@@ -27,7 +27,7 @@ st.markdown("""
     color:white;
   }
 
-  /* ===== LOGIN BOX ===== */
+  /* LOGIN BOX */
   .login-box {
     background: rgba(0,0,0,0.8);
     border: 1px solid #e6c300;
@@ -50,15 +50,11 @@ st.markdown("""
   }
   .login-links a:hover { text-decoration:underline; }
 
-  /* ===== Banner ===== */
-  .banner {
-    text-align:center; padding:2rem 0 1rem; margin-bottom:1rem;
-  }
-  .banner img {
-    width:50%; max-width:300px; border-radius:10px;
-  }
+  /* BANNER */
+  .banner { text-align:center; padding:2rem 0 1rem; margin-bottom:1rem; }
+  .banner img { width:50%; max-width:300px; border-radius:10px; }
 
-  /* ===== Título & Menu ===== */
+  /* TÍTULO & MENU */
   .title {
     font-size:3rem; text-align:center; color:#e6c300; margin:1rem 0 0.5rem;
   }
@@ -70,21 +66,22 @@ st.markdown("""
   }
   .menu a:hover { color:#fff; }
 
-  /* ===== EXPANDERS ===== */
+  /* EXPANDERS */
   div[data-testid="stExpander"] {
     background: rgba(0,0,0,0.6) !important;
     padding: 1rem 1.5rem !important;
     border-radius: 12px !important;
-    margin: 1rem auto !important;
-    max-width: 900px !important;
+    margin: 1rem 0 !important;
+    width: 100% !important;
   }
 
-  /* ===== DISCORD ICON ===== */
-  .discord-link { text-align:center; margin:2rem 0; }
+  /* DISCORD ICON */
+  .discord-link { text-align:left; margin:2rem 0; }
   .discord-link img { width:40px; cursor:pointer; }
 
   @media(max-width:600px){
     .menu { flex-direction:column; }
+    .login-box { margin-top:0.5rem; }
   }
 </style>
 """, unsafe_allow_html=True)
@@ -104,7 +101,7 @@ with col_login:
         submit     = st.form_submit_button("Entrar")
         if submit:
             if captcha_in == st.session_state.captcha_key:
-                st.success(f"Bem‐vindo, **{user_in}**!")
+                st.success(f"Bem-vindo, **{user_in}**!")
             else:
                 st.error("Captcha incorreto, tente novamente.")
     st.markdown("""
@@ -145,7 +142,7 @@ with col_content:
       </div>
     """, unsafe_allow_html=True)
 
-    # — Sobre a Guilda (expander) —
+    # — Sobre a Guilda —
     with st.expander("📌 Sobre a Guilda", expanded=True):
         st.markdown("- **Missão:** Formar comunidade madura, respeitosa e com espírito de equipe focada em PvP.")
         st.markdown("- **Benefícios:** Calls de qualidade, apoio a novos e veteranos.")
@@ -202,7 +199,7 @@ with col_content:
           <img src="https://logodownload.org/wp-content/uploads/2017/11/discord-logo-0.png" alt="Discord">
         </a>
       </div>
-      <div style="text-align:center;color:gray;font-size:0.8rem;margin-bottom:2rem;">
+      <div style="text-align:left;color:gray;font-size:0.8rem;margin-bottom:2rem;">
         SafeZone – Guilda BR de Albion Online | Desde 2023 | MANDATORY Alliance
       </div>
     """, unsafe_allow_html=True)
