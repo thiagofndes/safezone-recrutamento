@@ -46,6 +46,8 @@ st.markdown("""
         background-position: center;
     }
     .banner {
+        position: relative;
+        z-index: 20;
         text-align: center;
         margin: 0;
         padding: 0;
@@ -63,7 +65,7 @@ st.markdown("""
         padding: 2rem;
         border-radius: 15px;
         max-width: 900px;
-        margin: -20vh auto 2rem;
+        margin: 0 auto 2rem;
         box-shadow: 0px 0px 15px #000;
         z-index: 10;
     }
@@ -114,7 +116,7 @@ st.markdown("""
     }
     @media screen and (max-width: 600px) {
         .banner img { width: 70%; max-width: 200px; }
-        .main-container { margin-top: -15vh; padding: 1rem; }
+        .main-container { padding: 1rem; }
         .menu { flex-direction: column; align-items: center; }
     }
 </style>
