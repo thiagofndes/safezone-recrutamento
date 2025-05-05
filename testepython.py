@@ -14,7 +14,7 @@ client = gspread.authorize(creds)
 
 # Use o ID da planilha diretamente para evitar erro de título
 spreadsheet_id = "1xRVuph9Y-6KMnEKmds17llmKYXSoaYTP2WCZkQRYtU0"
-sheet = client.open_by_key(spreadsheet_id).worksheet("Pagina1")
+sheet = client.open_by_key(spreadsheet_id).worksheet("Página1")
 
 # ========================
 # CONFIGURAÇÃO DE PÁGINA
