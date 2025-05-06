@@ -34,7 +34,7 @@ def load_lottie_url(url: str):
         return None
     return r.json()
 
-lottie_animation = load_lottie_url("https://lottie.host/27c0bd94-7a00-4433-80f6-bad7b0e4be5e/HMuVobExgh.json")
+lottie_animation = load_lottie_url("https://assets5.lottiefiles.com/packages/lf20_j1adxtyb.json")
 
 client, users_ws, users_df = carregar_usuarios()
 spreadsheet_id = "1xRVuph9Y-6KMnEKmds17llmKYXSoaYTP2WCZkQRYtU0"
