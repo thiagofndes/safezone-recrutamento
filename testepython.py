@@ -14,7 +14,7 @@ if "captcha_key" not in st.session_state:
     )
 
 # 3️⃣ Conecta ao Google Sheets e carrega aba LOGIN
-SCOPE = ["https://spreadsheets.google.com/feeds","https://www.googleapis.com/auth/drive"]
+SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 creds_dict = st.secrets["GOOGLE_SERVICE_ACCOUNT"]
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, SCOPE)
 client = gspread.authorize(creds)
@@ -32,7 +32,7 @@ now = datetime.utcnow()
 br_time = (now - pd.Timedelta(hours=3)).strftime("%H:%M")
 utc_time = now.strftime("%H:%M")
 
-# 5️⃣ CSS adicional
+# 5️⃣ CSS e botão de login
 st.markdown("""
 <style>
 body, .stApp {
@@ -47,29 +47,36 @@ body, .stApp {
   display: block;
   border-radius: 10px;
 }
-.login-link {
-  text-align: center;
-  margin-top: 1rem;
+.botao-login {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e6c300;
+    color: black;
+    font-weight: bold;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
 }
-.login-link a {
-  color: #e6c300;
-  font-weight: bold;
-  text-decoration: none;
-  font-size: 1rem;
+.botao-login:hover {
+    background-color: #d4b000;
 }
-.login-link a:hover {
-  text-decoration: underline;
-}
-.login-button {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
+.div-login {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 .discord-link img {
   width: 25px;
   height: 25px;
 }
 </style>
+
+<div class="div-login">
+    <a class="botao-login" href="/?page=Admin">
+        🔐 Ir para login/cadastro
+    </a>
+</div>
 """, unsafe_allow_html=True)
 
 # 6️⃣ Layout padrão sem colunas para centralizar tudo
@@ -102,12 +109,6 @@ if "user" in st.session_state:
         st.rerun()
 
     st.markdown('</div>', unsafe_allow_html=True)
-
-elif st.session_state.show_register:
-    st.markdown('<div class="login-link"><a href="/">Voltar ao login</a></div>', unsafe_allow_html=True)
-
-else:
-    st.markdown('<a href="#admin">🔐 Ir para login/cadastro</a>',unsafe_allow_html=True)
 
 # 7️⃣ Conteúdo principal
 st.markdown("""
@@ -142,7 +143,7 @@ if "user" not in st.session_state or st.session_state.get("role", 0) == 1:
         sheet = client.open_by_key(spreadsheet_id).worksheet("Página1")
         with st.form("recrutamento_form"):
             nome     = st.text_input("🧑 Nome do personagem")
-            classe   = st.selectbox("⚔️ Classe favorita", ["Melee","Range","Healer","Tank","Suporte"])
+            classe   = st.selectbox("⚔️ Classe favorita", ["Melee", "Range", "Healer", "Tank", "Suporte"])
             fama_pvp = st.text_input("🔥 Fama PVP (ex: 2.5m, 1.2b)")
             fama_pve = st.text_input("🛡️ Fama PVE (ex: 4m, 500k)")
             enviar   = st.form_submit_button("Enviar")
