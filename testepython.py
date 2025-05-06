@@ -113,17 +113,17 @@ with col_login:
             criar = st.form_submit_button("Criar Conta")
 
             if criar:
-                # Atualiza dados para evitar erro de chave inexistente
-                users_df = pd.DataFrame(users_ws.get_all_records())
+                records = users_ws.get_all_records()
+                users_df = pd.DataFrame(records)
+                if users_df.empty:
+                    users_df = pd.DataFrame(columns=["nome", "password", "nivel", "email", "data"])
 
-                if not new_user or not new_pwd or not new_email:
+                if not new_user or not new_pwd or not confirm_pwd or not new_email:
                     st.error("Preencha todos os campos.")
                 elif new_pwd != confirm_pwd:
                     st.error("As senhas não coincidem.")
                 elif "@" not in new_email or "." not in new_email:
                     st.error("E-mail inválido.")
-                elif "nome" not in users_df.columns:
-                    st.error("Coluna 'nome' não encontrada na planilha.")
                 elif new_user in users_df["nome"].values:
                     st.error("Usuário já existe.")
                 else:
@@ -138,28 +138,29 @@ with col_login:
     else:
         st.markdown("### Login SafeZone", unsafe_allow_html=True)
         with st.form("login_form", clear_on_submit=False):
-            user_in    = st.text_input("Usuário", placeholder="seu_usuario")
-            pwd_in     = st.text_input("Senha", type="password", placeholder="••••••••")
+            user_in = st.text_input("Usuário", placeholder="seu_usuario")
+            pwd_in = st.text_input("Senha", type="password", placeholder="••••••••")
             st.write(f"🔐 **Captcha:** {st.session_state.captcha_key}")
             captcha_in = st.text_input("Digite o captcha", placeholder="XXXXX")
-            submit     = st.form_submit_button("Entrar")
+            submit = st.form_submit_button("Entrar")
 
             if submit:
-                users_df = pd.DataFrame(users_ws.get_all_records())  # garante atualização
-                if "nome" not in users_df.columns:
-                    st.error("Coluna 'nome' não encontrada na planilha.")
-                else:
-                    row = users_df.loc[users_df["nome"] == user_in]
-                    if not row.empty:
-                        correct_pwd = str(row.iloc[0]["password"])
-                        if pwd_in == correct_pwd and captcha_in == st.session_state.captcha_key:
-                            st.success(f"Bem-vindo, **{user_in}**!")
-                            st.session_state.user = user_in
-                            st.session_state.role = int(row.iloc[0]["nivel"])
-                        else:
-                            st.error("Usuário, senha ou captcha incorretos.")
+                records = users_ws.get_all_records()
+                users_df = pd.DataFrame(records)
+                if users_df.empty:
+                    users_df = pd.DataFrame(columns=["nome", "password", "nivel", "email", "data"])
+
+                row = users_df.loc[users_df["nome"] == user_in]
+                if not row.empty:
+                    correct_pwd = str(row.iloc[0]["password"])
+                    if pwd_in == correct_pwd and captcha_in == st.session_state.captcha_key:
+                        st.success(f"Bem-vindo, **{user_in}**!")
+                        st.session_state.user = user_in
+                        st.session_state.role = int(row.iloc[0]["nivel"])
                     else:
-                        st.error("Usuário não encontrado.")
+                        st.error("Usuário, senha ou captcha incorretos.")
+                else:
+                    st.error("Usuário não encontrado.")
 
         st.markdown("""
           <div class="login-links">
@@ -171,7 +172,6 @@ with col_login:
             mostrar_cadastro()
 
     st.markdown('</div>', unsafe_allow_html=True)
-
 
 # — Se estiver logado, mostra o conteúdo — 
 if "user" in st.session_state:
