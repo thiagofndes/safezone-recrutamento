@@ -116,11 +116,22 @@ with col_login:
     """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# — Se não estiver logado, para por aqui —
-if "user" not in st.session_state:
+# — Se estiver logado, mostra o conteúdo — 
+if "user" in st.session_state:
+    with col_content:
+        # Banner
+        st.markdown("""
+        <div class="banner">
+          <img src="https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/BVANNER.png?raw=true" alt="Banner">
+        </div>
+        """, unsafe_allow_html=True)
+
+        # ... (restante do conteúdo principal como está)
+
+else:
     with col_content:
         st.warning("Por favor, faça login para acessar o conteúdo.")
-    st.stop()
+
 
 # 6️⃣ Conteúdo principal — agora sem menu de âncoras
 with col_content:
