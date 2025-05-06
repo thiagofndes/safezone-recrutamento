@@ -174,6 +174,51 @@ with col_login:
                 if users_df.empty:
                     users_df = pd.DataFrame(columns=["nome", "password", "nivel", "email", "data"])
 
+                row = users_df[users_df["nome"] == user_in]
+                if not row.empty:
+                    row_data = row.iloc[0]
+                    if "password" in row_data:
+                        correct_pwd = str(row_data["password"])
+                        if pwd_in == correct_pwd and captcha_in == st.session_state.captcha_key:
+                            st.success(f"Bem-vindo, **{user_in}**!")
+                            st.session_state.user = user_in
+                            st.session_state.role = int(row_data["nivel"])
+                            st.rerun()
+                        else:
+                            st.error("Usuário, senha ou captcha incorretos.")
+                    else:
+                        st.error("Erro interno: coluna 'password' não encontrada.")
+                else:
+                    st.error("Usuário não encontrado.")
+
+        st.markdown("""
+          <div class="login-links">
+            <a href="#">Esqueci minha senha</a>
+          </div>
+        """, unsafe_allow_html=True)
+
+        if st.button("🆕 Criar nova conta"):
+            mostrar_cadastro()
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+
+    else:
+        st.markdown('<div class="login-box">', unsafe_allow_html=True)
+        st.markdown("### Login SafeZone", unsafe_allow_html=True)
+        with st.form("login_form", clear_on_submit=False):
+            user_in = st.text_input("Usuário", placeholder="seu_usuario")
+            pwd_in = st.text_input("Senha", type="password", placeholder="••••••••")
+            st.write(f"🔐 **Captcha:** {st.session_state.captcha_key}")
+            captcha_in = st.text_input("Digite o captcha", placeholder="XXXXX")
+            submit = st.form_submit_button("Entrar")
+
+            if submit:
+                records = users_ws.get_all_records()
+                users_df = pd.DataFrame(records)
+                if users_df.empty:
+                    users_df = pd.DataFrame(columns=["nome", "password", "nivel", "email", "data"])
+
                 if user_in in users_df["nome"].values:
                     row = users_df[users_df["nome"] == user_in].iloc[0]
                     correct_pwd = str(row["password"])
