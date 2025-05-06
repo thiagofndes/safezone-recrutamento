@@ -104,7 +104,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ✅ Exibe animação com proteção
-if lottie_animation:
+if lottie_animation and isinstance(lottie_animation, dict) and "v" in lottie_animation:
     st_lottie.st_lottie(lottie_animation, height=150, key="animation")
 else:
-    st.warning("❗ Animação não carregada.")
+    st.warning("❗ Animação inválida ou não carregada.")
