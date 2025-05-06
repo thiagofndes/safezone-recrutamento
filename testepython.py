@@ -35,17 +35,6 @@ utc_time = now.strftime("%H:%M")
 # 5️⃣ CSS + Botão estilizado de login
 st.markdown("""
 <style>
-body, .stApp {
-  background: url('https://github.com/thiagofndes/safezone-recrutamento/raw/main/images/FUNDO.png') center/cover fixed no-repeat;
-}
-.banner img {
-  width: 50%;
-  max-width: 300px;
-  height: auto;
-  margin: auto;
-  display: block;
-  border-radius: 10px;
-}
 .botao-login {
     padding: 10px 20px;
     background-color: #e6c300;
@@ -65,18 +54,15 @@ body, .stApp {
     justify-content: center;
     margin-top: 20px;
 }
-.discord-link img {
-  width: 25px;
-  height: 25px;
-}
 </style>
 
 <div class="div-login">
-    <a href="/?page=Admin">
-        <button class="botao-login">🔐 Ir para login/cadastro</button>
-    </a>
+    <button class="botao-login" onclick="window.location.href='/?page=Admin'">
+        🔐 Ir para login/cadastro
+    </button>
 </div>
 """, unsafe_allow_html=True)
+
 
 # 6️⃣ Sessão e controle de login
 if "show_register" not in st.session_state:
