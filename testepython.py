@@ -1,9 +1,8 @@
 import streamlit as st
 import pandas as pd
-import json, gspread, random, string, requests
+import json, gspread, random, string
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
-import streamlit_lottie as st_lottie
 
 # 1️⃣ Configuração da página
 st.set_page_config(page_title="SafeZone - Recrutamento", layout="wide")
@@ -36,17 +35,7 @@ utc_time = now.strftime("%H:%M")
 # 5️⃣ CSS global (mantido original)
 # ... (mantém o bloco CSS exatamente como está no código original que você enviou)
 
-# 6️⃣ Carrega animação Lottie
-
-def load_lottie_url(url: str):
-    r = requests.get(url)
-    if r.status_code != 200:
-        return None
-    return r.json()
-
-lottie_animation = load_lottie_url("https://lottie.host/27c0bd94-7a00-4433-80f6-bad7b0e4be5e/HMuVobExgh.json")
-
-# 7️⃣ Layout em colunas
+# 6️⃣ Layout em colunas
 col_content, col_login = st.columns([3,1], gap="small")
 
 with col_login:
@@ -90,16 +79,14 @@ with col_login:
         # ...
         pass
 
-# 8️⃣ Conteúdo principal
+# 7️⃣ Conteúdo principal
 with col_content:
-    # Banner e animação
     st.markdown("""
     <div class="banner">
       <img src="https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/BVANNER.png?raw=true" alt="Banner">
     </div>
     """, unsafe_allow_html=True)
 
-    st_lottie.st_lottie(lottie_animation, height=150, key="animation")
     st.markdown('<div class="title">SafeZone</div>', unsafe_allow_html=True)
 
     with st.expander("📌 Sobre a Guilda", expanded=True):
@@ -121,7 +108,6 @@ with col_content:
         st.image("https://albiononline.com/assets/images/news/2023-01-AlbionGuildSeason/Winner.jpg", use_column_width=True)
         st.image("https://albiononline.com/assets/images/news/2021-Season14/mid.jpg", use_column_width=True)
 
-    # 9️⃣ Formulário de Recrutamento (somente se não for membro logado)
     if "user" not in st.session_state or st.session_state.get("role", 0) == 1:
         with st.expander("📋 Formulário de Recrutamento"):
             sheet = client.open_by_key(spreadsheet_id).worksheet("Página1")
@@ -145,7 +131,7 @@ with col_content:
         st.text_area("Mensagem:")
         st.button("Enviar Feedback")
 
-    st.markdown("""
+    st.markdown(f"""
       <div class="discord-link">
         <a href="https://discord.gg/FApJNJ4dXU" target="_blank">
           <img src="https://logodownload.org/wp-content/uploads/2017/11/discord-logo-0.png" alt="Discord">
