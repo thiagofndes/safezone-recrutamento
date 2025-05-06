@@ -128,9 +128,7 @@ if "user" in st.session_state:
 
         # ... (restante do conteúdo principal como está)
 
-else:
-    with col_content:
-        st.warning("Por favor, faça login para acessar o conteúdo.")
+
 
 
 # 6️⃣ Conteúdo principal — agora sem menu de âncoras
