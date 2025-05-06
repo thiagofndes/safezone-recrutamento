@@ -109,7 +109,10 @@ with col_login:
         st.markdown('<div class="login-link"><a href="/">Voltar ao login</a></div>', unsafe_allow_html=True)
 
     else:
-        st.markdown('<div class="login-button"><a href="pages/admin" class="login-link">🔐 Ir para login/cadastro</a></div>', unsafe_allow_html=True)
+        st.markdown(
+    '<div class="login-button"><a href="?admin" class="login-link">🔐 Ir para login/cadastro</a></div>',
+    unsafe_allow_html=True
+)
 
 # 7️⃣ Conteúdo principal
 with col_content:
