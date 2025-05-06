@@ -147,7 +147,7 @@ with col_content:
         <a href="#">Termos</a>
       </div>
       <style>
-      .footer {
+      .footer {{
         background: rgba(0,0,0,0.6);
         text-align: center;
         padding: 0.6rem;
@@ -155,12 +155,12 @@ with col_content:
         font-size: 0.8rem;
         color: #ccc;
         border-top: 1px solid #333;
-      }
-      .footer a {
+      }}
+      .footer a {{
         color: #e6c300;
         text-decoration: none;
         margin: 0 0.5rem;
-      }
-      .footer a:hover { text-decoration: underline; }
+      }}
+      .footer a:hover {{ text-decoration: underline; }}
       </style>
     """, unsafe_allow_html=True)
