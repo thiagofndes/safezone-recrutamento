@@ -73,7 +73,7 @@ body, .stApp {
 </style>
 
 <div class="div-login">
-    <a class="botao-login" href="/?page=Admin">
+    <a class="botao-login" href="/admin" target="_self">
         🔐 Ir para login/cadastro
     </a>
 </div>
