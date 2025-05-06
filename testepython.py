@@ -36,7 +36,7 @@ utc_time = now.strftime("%H:%M")
 st.markdown("""
 <style>
 body, .stApp {
-  background: url('https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/FUNDO.png?raw=true') center/cover fixed no-repeat;
+  background: url('https://github.com/thiagofndes/safezone-recrutamento/raw/main/images/FUNDO.png') center/cover fixed no-repeat;
 }
 .banner img {
   width: 50%;
@@ -115,7 +115,7 @@ with col_login:
 with col_content:
     st.markdown("""
     <div class="banner">
-      <img src="https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/BVANNER.png?raw=true" alt="Banner">
+      <img src="https://github.com/thiagofndes/safezone-recrutamento/raw/main/images/BVANNER.png" alt="Banner">
     </div>
     """, unsafe_allow_html=True)
 
