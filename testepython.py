@@ -32,8 +32,32 @@ now = datetime.utcnow()
 br_time = (now - pd.Timedelta(hours=3)).strftime("%H:%M")
 utc_time = now.strftime("%H:%M")
 
-# 5️⃣ CSS global (mantido original)
-# ... (mantém o bloco CSS exatamente como está no código original que você enviou)
+# 5️⃣ CSS adicional para banner e botão de login/cadastro
+st.markdown("""
+<style>
+.banner img {
+  width: 50%;
+  max-width: 300px;
+  height: auto;
+  margin: auto;
+  display: block;
+  border-radius: 10px;
+}
+.login-link {
+  text-align: center;
+  margin-top: 1rem;
+}
+.login-link a {
+  color: #e6c300;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+}
+.login-link a:hover {
+  text-decoration: underline;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # 6️⃣ Layout em colunas
 col_content, col_login = st.columns([3,1], gap="small")
@@ -70,14 +94,10 @@ with col_login:
         st.markdown('</div>', unsafe_allow_html=True)
 
     elif st.session_state.show_register:
-        # Bloco de criação de conta (mantido igual)
-        # ...
-        pass
+        st.markdown('<div class="login-link"><a href="/">Voltar ao login</a></div>', unsafe_allow_html=True)
 
     else:
-        # Bloco de login (mantido igual)
-        # ...
-        pass
+        st.markdown('<div class="login-link"><a href="/">Ir para login/cadastro</a></div>', unsafe_allow_html=True)
 
 # 7️⃣ Conteúdo principal
 with col_content:
