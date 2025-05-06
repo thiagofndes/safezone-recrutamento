@@ -3,6 +3,7 @@ import pandas as pd
 import json, gspread, random, string
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
+from streamlit_extras.switch_page_button import switch_page  # IMPORTANTE
 
 # 1️⃣ Configuração da página
 st.set_page_config(page_title="SafeZone - Recrutamento", layout="centered")
@@ -13,7 +14,7 @@ if "captcha_key" not in st.session_state:
         random.choices(string.ascii_uppercase + string.digits, k=5)
     )
 
-# 3️⃣ Conecta ao Google Sheets e carrega aba LOGIN
+# 3️⃣ Conecta ao Google Sheets
 SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 creds_dict = st.secrets["GOOGLE_SERVICE_ACCOUNT"]
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, SCOPE)
@@ -32,12 +33,11 @@ now = datetime.utcnow()
 br_time = (now - pd.Timedelta(hours=3)).strftime("%H:%M")
 utc_time = now.strftime("%H:%M")
 
-# 5️⃣ CSS e botão de login
+# 5️⃣ CSS + botão estilizado com switch_page
 st.markdown("""
 <style>
 body, .stApp {
   background: url('https://github.com/thiagofndes/safezone-recrutamento/raw/main/images/FUNDO.png') center/cover fixed no-repeat;
-  text-align: center;
 }
 .banner img {
   width: 50%;
@@ -57,6 +57,8 @@ body, .stApp {
     text-decoration: none;
     font-size: 16px;
     transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
 }
 .botao-login:hover {
     background-color: #d4b000;
@@ -66,20 +68,16 @@ body, .stApp {
     justify-content: center;
     margin-top: 20px;
 }
-.discord-link img {
-  width: 25px;
-  height: 25px;
-}
 </style>
-
-<div class="div-login">
-    <a class="botao-login" href="/admin" target="_self">
-        🔐 Ir para login/cadastro
-    </a>
-</div>
 """, unsafe_allow_html=True)
 
-# 6️⃣ Layout padrão sem colunas para centralizar tudo
+with st.container():
+    st.markdown('<div class="div-login">', unsafe_allow_html=True)
+    if st.button("🔐 Ir para login/cadastro", key="btn_login", help="Clique para acessar o login", use_container_width=False):
+        switch_page("admin")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# 6️⃣ Login ativo
 if "show_register" not in st.session_state:
     st.session_state.show_register = False
 
@@ -110,7 +108,7 @@ if "user" in st.session_state:
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-# 7️⃣ Conteúdo principal
+# 7️⃣ Banner e conteúdo
 st.markdown("""
 <div class="banner">
   <img src="https://github.com/thiagofndes/safezone-recrutamento/raw/main/images/BVANNER.png" alt="Banner">
