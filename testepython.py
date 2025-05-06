@@ -57,7 +57,7 @@ body, .stApp {
 
 st.markdown('<div style="display:flex;justify-content:center;margin-top:20px;">', unsafe_allow_html=True)
 if st.button("🔐 Ir para login/cadastro"):
-    st.markdown("<meta http-equiv='refresh' content='0; url=/?page=Admin'>", unsafe_allow_html=True)
+    st.markdown("<meta http-equiv='refresh' content='0; url=/?page=admin'>", unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 # 6️⃣ Sessão e controle de login
