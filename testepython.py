@@ -119,7 +119,7 @@ with col_login:
         nome = st.session_state.user
 
         st.markdown('<div class="login-box">', unsafe_allow_html=True)
-        st.markdown(f"### ὄb Seja bem-vindo, **{nome}**!", unsafe_allow_html=True)
+        st.markdown(f"### Seja bem-vindo, **{nome}**!", unsafe_allow_html=True)
 
         if nivel == 1:
             st.markdown("🔰 **Permissão:** Membro")
