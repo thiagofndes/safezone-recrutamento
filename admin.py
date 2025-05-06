@@ -3,7 +3,6 @@ import pandas as pd
 import json, gspread, random, string, requests
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
-import streamlit_lottie as st_lottie
 
 # 1️⃣ Configuração da página
 st.set_page_config(page_title="SafeZone - Recrutamento", layout="wide")
@@ -28,13 +27,7 @@ def carregar_usuarios():
         df = pd.DataFrame(columns=["nome", "password", "nivel", "email", "data"])
     return client, users_ws, df
 
-def load_lottie_url(url: str):
-    r = requests.get(url)
-    if r.status_code != 200:
-        return None
-    return r.json()
 
-lottie_animation = load_lottie_url("https://assets5.lottiefiles.com/packages/lf20_j1adxtyb.json")
 
 client, users_ws, users_df = carregar_usuarios()
 spreadsheet_id = "1xRVuph9Y-6KMnEKmds17llmKYXSoaYTP2WCZkQRYtU0"
@@ -104,7 +97,4 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ✅ Exibe animação com proteção
-if lottie_animation and isinstance(lottie_animation, dict) and "v" in lottie_animation:
-    st_lottie.st_lottie(lottie_animation, height=150, key="animation")
-else:
-    st.warning("❗ Animação inválida ou não carregada.")
+st.image("https://media.tenor.com/1zvjR_pqULMAAAAC/shield-secure.gif", width=120)
