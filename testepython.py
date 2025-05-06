@@ -32,9 +32,12 @@ now = datetime.utcnow()
 br_time = (now - pd.Timedelta(hours=3)).strftime("%H:%M")
 utc_time = now.strftime("%H:%M")
 
-# 5️⃣ CSS adicional para banner e botão de login/cadastro
+# 5️⃣ CSS adicional
 st.markdown("""
 <style>
+body, .stApp {
+  background: url('https://github.com/thiagofndes/safezone-recrutamento/blob/main/images/FUNDO.png?raw=true') center/cover fixed no-repeat;
+}
 .banner img {
   width: 50%;
   max-width: 300px;
@@ -55,6 +58,15 @@ st.markdown("""
 }
 .login-link a:hover {
   text-decoration: underline;
+}
+.login-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+.discord-link img {
+  width: 35px;
+  height: 35px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -97,7 +109,7 @@ with col_login:
         st.markdown('<div class="login-link"><a href="/">Voltar ao login</a></div>', unsafe_allow_html=True)
 
     else:
-        st.markdown('<div class="login-link"><a href="/">Ir para login/cadastro</a></div>', unsafe_allow_html=True)
+        st.markdown('<div class="login-button"><a href="/" class="login-link">🔐 Ir para login/cadastro</a></div>', unsafe_allow_html=True)
 
 # 7️⃣ Conteúdo principal
 with col_content:
