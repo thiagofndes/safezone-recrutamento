@@ -1,8 +1,9 @@
 import streamlit as st
 import pandas as pd
-import json, gspread, random, string
+import json, gspread, random, string, requests
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
+import streamlit_lottie as st_lottie
 
 # 1️⃣ Configuração da página
 st.set_page_config(page_title="SafeZone - Recrutamento", layout="wide")
@@ -57,7 +58,7 @@ st.markdown("""
   .banner {
     text-align:center; padding:1rem 0 0.5rem; margin-bottom:0.5rem;
   }
-  .banner img { width:45%; max-width:300px; border-radius:10px; }
+  .banner img { width:100%; max-width:450px; height:auto; border-radius:10px; }
   .title {
     font-size:2.5rem; margin:0.8rem 0 0.4rem; text-align:center; color:#e6c300;
   }
@@ -70,11 +71,35 @@ st.markdown("""
   }
   .discord-link { text-align:left; margin:1rem 0; }
   .discord-link img { width:35px; }
+  .footer {
+    background: rgba(0,0,0,0.6);
+    text-align: center;
+    padding: 0.6rem;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: #ccc;
+    border-top: 1px solid #333;
+  }
+  .footer a {
+    color: #e6c300;
+    text-decoration: none;
+    margin: 0 0.5rem;
+  }
+  .footer a:hover { text-decoration: underline; }
   @media(max-width:600px){
     .login-box { margin-top:0.3rem; }
   }
 </style>
 """, unsafe_allow_html=True)
+
+# Função para carregar animação
+def load_lottie_url(url: str):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
+
+lottie_animation = load_lottie_url("https://lottie.host/27c0bd94-7a00-4433-80f6-bad7b0e4be5e/HMuVobExgh.json")
 
 # 5️⃣ Layout em colunas
 col_content, col_login = st.columns([3,1], gap="small")
@@ -107,6 +132,32 @@ with col_login:
             del st.session_state["user"]
             del st.session_state["role"]
             st.rerun()
+
+        if nivel == 3:
+            st.markdown("---")
+            st.markdown("👑 **Administração de Usuários**")
+
+            records = users_ws.get_all_records()
+            df_admin = pd.DataFrame(records)
+
+            for i, row in df_admin.iterrows():
+                with st.expander(f"👤 {row['nome']} | Nível: {row['nivel']}"):
+                    novo_nome = st.text_input(f"Nome de usuário {i}", value=row["nome"], key=f"nome_{i}")
+                    nova_senha = st.text_input(f"Senha {i}", value=row["password"], key=f"senha_{i}")
+                    novo_email = st.text_input(f"E-mail {i}", value=row["email"], key=f"email_{i}")
+                    novo_nivel = st.selectbox(f"Nível {i}", [1, 2, 3], index=row["nivel"] - 1, key=f"nivel_{i}")
+
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        if st.button(f"💾 Salvar alterações {i}"):
+                            users_ws.update(f"A{i+2}", [[novo_nome, nova_senha, novo_nivel, novo_email, row["data"]]])
+                            st.success(f"Usuário {novo_nome} atualizado!")
+                            st.rerun()
+                    with col2:
+                        if st.button(f"❌ Deletar usuário {i}"):
+                            users_ws.delete_rows(i + 2)
+                            st.warning(f"Usuário {row['nome']} removido!")
+                            st.rerun()
 
         st.markdown('</div>', unsafe_allow_html=True)
 
@@ -194,6 +245,8 @@ with col_content:
     </div>
     """, unsafe_allow_html=True)
 
+    st_lottie.st_lottie(lottie_animation, height=150, key="animation")
+
     st.markdown('<div class="title">SafeZone</div>', unsafe_allow_html=True)
 
     with st.expander("📌 Sobre a Guilda", expanded=True):
@@ -243,5 +296,10 @@ with col_content:
       </div>
       <div style="text-align:left;color:gray;font-size:0.8rem;margin-bottom:1rem;">
         SafeZone – Guilda BR de Albion Online | Desde 2023 | MANDATORY Alliance
+      </div>
+      <div class="footer">
+        SafeZone © 2025 · <a href="https://albiononline.com" target="_blank">Albion Online</a> · 
+        <a href="https://discord.gg/FApJNJ4dXU" target="_blank">Nosso Discord</a> · 
+        <a href="#">Termos</a>
       </div>
     """, unsafe_allow_html=True)
