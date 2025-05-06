@@ -28,6 +28,14 @@ def carregar_usuarios():
         df = pd.DataFrame(columns=["nome", "password", "nivel", "email", "data"])
     return client, users_ws, df
 
+def load_lottie_url(url: str):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
+
+lottie_animation = load_lottie_url("https://lottie.host/27c0bd94-7a00-4433-80f6-bad7b0e4be5e/HMuVobExgh.json")
+
 client, users_ws, users_df = carregar_usuarios()
 spreadsheet_id = "1xRVuph9Y-6KMnEKmds17llmKYXSoaYTP2WCZkQRYtU0"
 
@@ -94,3 +102,9 @@ st.markdown("""
   }
 </style>
 """, unsafe_allow_html=True)
+
+# ✅ Exibe animação com proteção
+if lottie_animation:
+    st_lottie.st_lottie(lottie_animation, height=150, key="animation")
+else:
+    st.warning("❗ Animação não carregada.")
