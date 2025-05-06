@@ -22,7 +22,12 @@ client = gspread.authorize(creds)
 
 spreadsheet_id = "1xRVuph9Y-6KMnEKmds17llmKYXSoaYTP2WCZkQRYtU0"
 users_ws = client.open_by_key(spreadsheet_id).worksheet("LOGIN")
-users_df = pd.DataFrame(users_ws.get_all_records())
+records = users_ws.get_all_records()
+users_df = pd.DataFrame(records)
+
+# Verificação extra para forçar as colunas corretas se estiver vazio
+if users_df.empty:
+    users_df = pd.DataFrame(columns=["nome", "password", "nivel", "email", "data"])
 
 # 4️⃣ CSS global (removi a seção .menu)
 st.markdown("""
