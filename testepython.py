@@ -16,7 +16,7 @@ if "captcha_key" not in st.session_state:
 
 # 3️⃣ Conecta ao Google Sheets e carrega aba LOGIN
 SCOPE = ["https://spreadsheets.google.com/feeds","https://www.googleapis.com/auth/drive"]
-creds_dict = json.loads(st.secrets["GOOGLE_SERVICE_ACCOUNT"])
+creds_dict = st.secrets["GOOGLE_SERVICE_ACCOUNT"]
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, SCOPE)
 client = gspread.authorize(creds)
 
