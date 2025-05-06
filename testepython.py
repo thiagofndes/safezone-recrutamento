@@ -65,8 +65,8 @@ body, .stApp {
   margin-top: 1rem;
 }
 .discord-link img {
-  width: 35px;
-  height: 35px;
+  width: 25px;
+  height: 25px;
 }
 </style>
 """, unsafe_allow_html=True)
