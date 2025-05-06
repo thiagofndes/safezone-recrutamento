@@ -89,40 +89,47 @@ col_content, col_login = st.columns([3,1], gap="small")
 with col_login:
     st.markdown('<div class="login-box">', unsafe_allow_html=True)
 
-    # Inicializa a flag para alternar entre login e criação de conta
     if "show_register" not in st.session_state:
         st.session_state.show_register = False
 
-    # Funções para alternar visualmente
     def mostrar_login():
         st.session_state.show_register = False
 
     def mostrar_cadastro():
         st.session_state.show_register = True
 
-    # 🔒 FORMULÁRIO DE CRIAÇÃO DE CONTA
     if st.session_state.show_register:
         st.markdown("### Criar Conta", unsafe_allow_html=True)
         with st.form("register_form"):
             new_user = st.text_input("Novo usuário")
             new_pwd = st.text_input("Nova senha", type="password")
+            confirm_pwd = st.text_input("Confirme a senha", type="password")
             new_email = st.text_input("E-mail")
             criar = st.form_submit_button("Criar Conta")
 
             if criar:
+                # Atualiza dados para evitar erro de chave inexistente
+                users_df = pd.DataFrame(users_ws.get_all_records())
+
                 if not new_user or not new_pwd or not new_email:
                     st.error("Preencha todos os campos.")
+                elif new_pwd != confirm_pwd:
+                    st.error("As senhas não coincidem.")
+                elif "@" not in new_email or "." not in new_email:
+                    st.error("E-mail inválido.")
+                elif "nome" not in users_df.columns:
+                    st.error("Coluna 'nome' não encontrada na planilha.")
                 elif new_user in users_df["nome"].values:
                     st.error("Usuário já existe.")
                 else:
-                    users_ws.append_row([new_user, new_pwd, 1, new_email])
+                    data_cadastro = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+                    users_ws.append_row([new_user, new_pwd, 1, new_email, data_cadastro])
                     st.success(f"Conta de {new_user} criada com sucesso!")
                     st.session_state.show_register = False
 
         if st.button("🔙 Voltar ao login"):
             mostrar_login()
 
-    # 🔐 FORMULÁRIO DE LOGIN
     else:
         st.markdown("### Login SafeZone", unsafe_allow_html=True)
         with st.form("login_form", clear_on_submit=False):
@@ -131,18 +138,23 @@ with col_login:
             st.write(f"🔐 **Captcha:** {st.session_state.captcha_key}")
             captcha_in = st.text_input("Digite o captcha", placeholder="XXXXX")
             submit     = st.form_submit_button("Entrar")
+
             if submit:
-                row = users_df.loc[users_df["nome"] == user_in]
-                if not row.empty:
-                    correct_pwd = str(row.iloc[0]["password"])
-                    if pwd_in == correct_pwd and captcha_in == st.session_state.captcha_key:
-                        st.success(f"Bem-vindo, **{user_in}**!")
-                        st.session_state.user = user_in
-                        st.session_state.role = int(row.iloc[0]["nivel"])
-                    else:
-                        st.error("Usuário, senha ou captcha incorretos.")
+                users_df = pd.DataFrame(users_ws.get_all_records())  # garante atualização
+                if "nome" not in users_df.columns:
+                    st.error("Coluna 'nome' não encontrada na planilha.")
                 else:
-                    st.error("Usuário não encontrado.")
+                    row = users_df.loc[users_df["nome"] == user_in]
+                    if not row.empty:
+                        correct_pwd = str(row.iloc[0]["password"])
+                        if pwd_in == correct_pwd and captcha_in == st.session_state.captcha_key:
+                            st.success(f"Bem-vindo, **{user_in}**!")
+                            st.session_state.user = user_in
+                            st.session_state.role = int(row.iloc[0]["nivel"])
+                        else:
+                            st.error("Usuário, senha ou captcha incorretos.")
+                    else:
+                        st.error("Usuário não encontrado.")
 
         st.markdown("""
           <div class="login-links">
