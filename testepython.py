@@ -86,35 +86,75 @@ st.markdown("""
 # 5️⃣ Layout em colunas: conteúdo / login
 col_content, col_login = st.columns([3,1], gap="small")
 
-# — Login na coluna direita —
 with col_login:
     st.markdown('<div class="login-box">', unsafe_allow_html=True)
-    st.markdown("### Login SafeZone", unsafe_allow_html=True)
-    with st.form("login_form", clear_on_submit=False):
-        user_in    = st.text_input("Usuário", placeholder="seu_usuario")
-        pwd_in     = st.text_input("Senha", type="password", placeholder="••••••••")
-        st.write(f"🔐 **Captcha:** {st.session_state.captcha_key}")
-        captcha_in = st.text_input("Digite o captcha", placeholder="XXXXX")
-        submit     = st.form_submit_button("Entrar")
-        if submit:
-            row = users_df.loc[users_df["nome"] == user_in]
-            if not row.empty:
-                correct_pwd = str(row.iloc[0]["password"])
-                if pwd_in == correct_pwd and captcha_in == st.session_state.captcha_key:
-                    st.success(f"Bem-vindo, **{user_in}**!")
-                    st.session_state.user = user_in
-                    st.session_state.role = int(row.iloc[0]["nivel"])
+
+    # Inicializa a flag para alternar entre login e criação de conta
+    if "show_register" not in st.session_state:
+        st.session_state.show_register = False
+
+    # Funções para alternar visualmente
+    def mostrar_login():
+        st.session_state.show_register = False
+
+    def mostrar_cadastro():
+        st.session_state.show_register = True
+
+    # 🔒 FORMULÁRIO DE CRIAÇÃO DE CONTA
+    if st.session_state.show_register:
+        st.markdown("### Criar Conta", unsafe_allow_html=True)
+        with st.form("register_form"):
+            new_user = st.text_input("Novo usuário")
+            new_pwd = st.text_input("Nova senha", type="password")
+            new_email = st.text_input("E-mail")
+            criar = st.form_submit_button("Criar Conta")
+
+            if criar:
+                if not new_user or not new_pwd or not new_email:
+                    st.error("Preencha todos os campos.")
+                elif new_user in users_df["nome"].values:
+                    st.error("Usuário já existe.")
                 else:
-                    st.error("Usuário, senha ou captcha incorretos.")
-            else:
-                st.error("Usuário não encontrado.")
-    st.markdown("""
-      <div class="login-links">
-        <a href="#">Esqueci minha senha</a> |
-        <a href="#">Criar conta</a>
-      </div>
-    """, unsafe_allow_html=True)
+                    users_ws.append_row([new_user, new_pwd, 1, new_email])
+                    st.success(f"Conta de {new_user} criada com sucesso!")
+                    st.session_state.show_register = False
+
+        if st.button("🔙 Voltar ao login"):
+            mostrar_login()
+
+    # 🔐 FORMULÁRIO DE LOGIN
+    else:
+        st.markdown("### Login SafeZone", unsafe_allow_html=True)
+        with st.form("login_form", clear_on_submit=False):
+            user_in    = st.text_input("Usuário", placeholder="seu_usuario")
+            pwd_in     = st.text_input("Senha", type="password", placeholder="••••••••")
+            st.write(f"🔐 **Captcha:** {st.session_state.captcha_key}")
+            captcha_in = st.text_input("Digite o captcha", placeholder="XXXXX")
+            submit     = st.form_submit_button("Entrar")
+            if submit:
+                row = users_df.loc[users_df["nome"] == user_in]
+                if not row.empty:
+                    correct_pwd = str(row.iloc[0]["password"])
+                    if pwd_in == correct_pwd and captcha_in == st.session_state.captcha_key:
+                        st.success(f"Bem-vindo, **{user_in}**!")
+                        st.session_state.user = user_in
+                        st.session_state.role = int(row.iloc[0]["nivel"])
+                    else:
+                        st.error("Usuário, senha ou captcha incorretos.")
+                else:
+                    st.error("Usuário não encontrado.")
+
+        st.markdown("""
+          <div class="login-links">
+            <a href="#">Esqueci minha senha</a>
+          </div>
+        """, unsafe_allow_html=True)
+
+        if st.button("🆕 Criar nova conta"):
+            mostrar_cadastro()
+
     st.markdown('</div>', unsafe_allow_html=True)
+
 
 # — Se estiver logado, mostra o conteúdo — 
 if "user" in st.session_state:
