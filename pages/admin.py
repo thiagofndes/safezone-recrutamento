@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import json, gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from streamlit_extras.switch_page_button import switch_page
 from datetime import datetime
 
 # 1️⃣ Configuração da página
@@ -46,37 +45,27 @@ body, .stApp {
   text-align: center;
   margin-top: 20px;
 }
-input, select {
-  border-radius: 6px !important;
-}
-.botao-voltar {
-    background-color: #e6c300;
-    color: black;
-    padding: 10px 20px;
-    border-radius: 10px;
+.css-1cpxqw2 {
+    background-color: #e6c300 !important;
+    color: black !important;
     font-weight: bold;
-    border: none;
-    margin-top: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-.botao-voltar:hover {
-    background-color: #d4b000;
+    border-radius: 10px !important;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# 4️⃣ Banner e título
+# 4️⃣ Banner
 st.markdown("""
 <div class="banner">
   <img src="https://github.com/thiagofndes/safezone-recrutamento/raw/main/images/BVANNER.png" alt="Banner">
 </div>
 """, unsafe_allow_html=True)
 
+# 5️⃣ Título
 st.markdown("<h2 style='text-align:center;'>🔐 Área de Login</h2>", unsafe_allow_html=True)
 
-# 5️⃣ Login Box
-with st.form("login_form", clear_on_submit=False):
+# 6️⃣ Login box
+with st.form("login_form"):
     st.markdown('<div class="login-box">', unsafe_allow_html=True)
     usuario = st.text_input("👤 Nome de usuário")
     senha   = st.text_input("🔑 Senha", type="password")
@@ -93,6 +82,8 @@ with st.form("login_form", clear_on_submit=False):
             st.error("❌ Usuário ou senha incorretos.")
     st.markdown('</div>', unsafe_allow_html=True)
 
-# 6️⃣ Botão voltar
-if st.button("⬅️ Voltar para a Home", key="voltar", help="Retorna à página inicial"):
-    switch_page("testepython")
+# 7️⃣ Botão "Voltar para o início"
+st.markdown('<div style="display:flex;justify-content:center;margin-top:20px;">', unsafe_allow_html=True)
+if st.button("⬅️ Voltar para o início"):
+    st.markdown("<meta http-equiv='refresh' content='0; url=/?page=SafeZone - Recrutamento'>", unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)

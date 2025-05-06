@@ -32,37 +32,33 @@ now = datetime.utcnow()
 br_time = (now - pd.Timedelta(hours=3)).strftime("%H:%M")
 utc_time = now.strftime("%H:%M")
 
-# 5️⃣ CSS + Botão estilizado de login
+# 5️⃣ CSS e botão de login
 st.markdown("""
 <style>
-.botao-login {
-    padding: 10px 20px;
-    background-color: #e6c300;
-    color: black;
+body, .stApp {
+  background: url('https://github.com/thiagofndes/safezone-recrutamento/raw/main/images/FUNDO.png') center/cover fixed no-repeat;
+}
+.banner img {
+  width: 50%;
+  max-width: 300px;
+  height: auto;
+  margin: auto;
+  display: block;
+  border-radius: 10px;
+}
+.css-1cpxqw2 {
+    background-color: #e6c300 !important;
+    color: black !important;
     font-weight: bold;
-    border-radius: 10px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-.botao-login:hover {
-    background-color: #d4b000;
-}
-.div-login {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+    border-radius: 10px !important;
 }
 </style>
-
-<div class="div-login">
-    <button class="botao-login" onclick="window.location.href='/?page=Admin'">
-        🔐 Ir para login/cadastro
-    </button>
-</div>
 """, unsafe_allow_html=True)
 
+st.markdown('<div style="display:flex;justify-content:center;margin-top:20px;">', unsafe_allow_html=True)
+if st.button("🔐 Ir para login/cadastro"):
+    st.markdown("<meta http-equiv='refresh' content='0; url=/?page=Admin'>", unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # 6️⃣ Sessão e controle de login
 if "show_register" not in st.session_state:
