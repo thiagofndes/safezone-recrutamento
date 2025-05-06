@@ -162,20 +162,16 @@ with col_login:
                 if users_df.empty:
                     users_df = pd.DataFrame(columns=["nome", "password", "nivel", "email", "data"])
 
-                row = users_df[users_df["nome"] == user_in]
+                row = users_df.loc[users_df["nome"] == user_in]
                 if not row.empty:
-                    row_data = row.iloc[0]
-                    if "password" in row_data:
-                        correct_pwd = str(row_data["password"])
-                        if pwd_in == correct_pwd and captcha_in == st.session_state.captcha_key:
-                            st.success(f"Bem-vindo, **{user_in}**!")
-                            st.session_state.user = user_in
-                            st.session_state.role = int(row_data["nivel"])
-                            st.rerun()
-                        else:
-                            st.error("Usuário, senha ou captcha incorretos.")
+                    correct_pwd = str(row["password"].values[0])
+                    if pwd_in == correct_pwd and captcha_in == st.session_state.captcha_key:
+                        st.success(f"Bem-vindo, **{user_in}**!")
+                        st.session_state.user = user_in
+                        st.session_state.role = int(row["nivel"].values[0])
+                        st.rerun()
                     else:
-                        st.error("Erro interno: coluna 'password' não encontrada.")
+                        st.error("Usuário, senha ou captcha incorretos.")
                 else:
                     st.error("Usuário não encontrado.")
 
