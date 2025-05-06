@@ -85,5 +85,5 @@ with st.form("login_form"):
 # 7️⃣ Botão "Voltar para o início"
 st.markdown('<div style="display:flex;justify-content:center;margin-top:20px;">', unsafe_allow_html=True)
 if st.button("⬅️ Voltar para o início"):
-    st.markdown("<meta http-equiv='refresh' content='0; url=/?page=SafeZone - Recrutamento'>", unsafe_allow_html=True)
+    st.markdown("<meta http-equiv='refresh' content='0; url=/?page=testepython'>", unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)

@@ -55,6 +55,7 @@ body, .stApp {
 </style>
 """, unsafe_allow_html=True)
 
+# 🔐 Botão de login que redireciona para admin.py
 st.markdown('<div style="display:flex;justify-content:center;margin-top:20px;">', unsafe_allow_html=True)
 if st.button("🔐 Ir para login/cadastro"):
     st.markdown("<meta http-equiv='refresh' content='0; url=/?page=admin'>", unsafe_allow_html=True)
