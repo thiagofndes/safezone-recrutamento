@@ -3,12 +3,11 @@ import pandas as pd
 import json, gspread, random, string
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
-from streamlit_extras.switch_page_button import switch_page  # IMPORTANTE
 
 # 1️⃣ Configuração da página
 st.set_page_config(page_title="SafeZone - Recrutamento", layout="centered")
 
-# 2️⃣ Gera um captcha aleatório (5 chars)
+# 2️⃣ Gera captcha aleatório
 if "captcha_key" not in st.session_state:
     st.session_state.captcha_key = "".join(
         random.choices(string.ascii_uppercase + string.digits, k=5)
@@ -28,12 +27,12 @@ users_df = pd.DataFrame(records)
 if users_df.empty:
     users_df = pd.DataFrame(columns=["nome", "password", "nivel", "email", "data"])
 
-# 4️⃣ Horário BR/UTC
+# 4️⃣ Horários
 now = datetime.utcnow()
 br_time = (now - pd.Timedelta(hours=3)).strftime("%H:%M")
 utc_time = now.strftime("%H:%M")
 
-# 5️⃣ CSS + botão estilizado com switch_page
+# 5️⃣ CSS + Botão estilizado de login
 st.markdown("""
 <style>
 body, .stApp {
@@ -48,17 +47,15 @@ body, .stApp {
   border-radius: 10px;
 }
 .botao-login {
-    display: inline-block;
     padding: 10px 20px;
     background-color: #e6c300;
     color: black;
     font-weight: bold;
     border-radius: 10px;
-    text-decoration: none;
     font-size: 16px;
-    transition: background-color 0.3s ease;
     border: none;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 .botao-login:hover {
     background-color: #d4b000;
@@ -68,24 +65,22 @@ body, .stApp {
     justify-content: center;
     margin-top: 20px;
 }
+.discord-link img {
+  width: 25px;
+  height: 25px;
+}
 </style>
+
+<div class="div-login">
+    <a href="/?page=Admin">
+        <button class="botao-login">🔐 Ir para login/cadastro</button>
+    </a>
+</div>
 """, unsafe_allow_html=True)
 
-with st.container():
-    st.markdown('<div class="div-login">', unsafe_allow_html=True)
-    if st.button("🔐 Ir para login/cadastro", key="btn_login", help="Clique para acessar o login", use_container_width=False):
-        switch_page("admin")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# 6️⃣ Login ativo
+# 6️⃣ Sessão e controle de login
 if "show_register" not in st.session_state:
     st.session_state.show_register = False
-
-def mostrar_login():
-    st.session_state.show_register = False
-
-def mostrar_cadastro():
-    st.session_state.show_register = True
 
 if "user" in st.session_state:
     nivel = st.session_state.role
@@ -108,7 +103,7 @@ if "user" in st.session_state:
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-# 7️⃣ Banner e conteúdo
+# 7️⃣ Banner e título
 st.markdown("""
 <div class="banner">
   <img src="https://github.com/thiagofndes/safezone-recrutamento/raw/main/images/BVANNER.png" alt="Banner">
@@ -117,6 +112,7 @@ st.markdown("""
 
 st.markdown('<div class="title">SafeZone</div>', unsafe_allow_html=True)
 
+# 8️⃣ Seções informativas
 with st.expander("📌 Sobre a Guilda", expanded=True):
     st.markdown("- **Missão:** Formar comunidade madura, respeitosa e com espírito de equipe focada em PvP.")
     st.markdown("- **Benefícios:** Calls de qualidade, apoio a novos e veteranos.")
@@ -136,6 +132,7 @@ with st.expander("🖼️ Galeria de Imagens"):
     st.image("https://albiononline.com/assets/images/news/2023-01-AlbionGuildSeason/Winner.jpg", use_column_width=True)
     st.image("https://albiononline.com/assets/images/news/2021-Season14/mid.jpg", use_column_width=True)
 
+# 9️⃣ Formulário de recrutamento
 if "user" not in st.session_state or st.session_state.get("role", 0) == 1:
     with st.expander("📋 Formulário de Recrutamento"):
         sheet = client.open_by_key(spreadsheet_id).worksheet("Página1")
@@ -154,11 +151,13 @@ if "user" not in st.session_state or st.session_state.get("role", 0) == 1:
 else:
     st.info("Você já é membro da SafeZone. Não é necessário preencher o formulário novamente.")
 
+# 🔟 Feedback
 with st.expander("🗣️ Deixe seu feedback para a guilda"):
     st.text_input("Seu nome (opcional):")
     st.text_area("Mensagem:")
     st.button("Enviar Feedback")
 
+# 🔚 Rodapé
 st.markdown(f"""
   <div class="discord-link">
     <a href="https://discord.gg/FApJNJ4dXU" target="_blank">
