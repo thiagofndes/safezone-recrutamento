@@ -92,8 +92,6 @@ st.markdown("""
 col_content, col_login = st.columns([3,1], gap="small")
 
 with col_login:
-    st.markdown('<div class="login-box">', unsafe_allow_html=True)
-
     if "show_register" not in st.session_state:
         st.session_state.show_register = False
 
@@ -103,7 +101,29 @@ with col_login:
     def mostrar_cadastro():
         st.session_state.show_register = True
 
-    if st.session_state.show_register:
+    if "user" in st.session_state:
+        nivel = st.session_state.role
+        nome = st.session_state.user
+
+        st.markdown('<div class="login-box">', unsafe_allow_html=True)
+        st.markdown(f"### 👋 Seja bem-vindo, **{nome}**!", unsafe_allow_html=True)
+
+        if nivel == 1:
+            st.markdown("🔰 **Permissão:** Membro")
+        elif nivel == 2:
+            st.markdown("🛡️ **Permissão:** Recrutador")
+        elif nivel == 3:
+            st.markdown("👑 **Permissão:** Admin")
+
+        if st.button("🚪 Sair"):
+            del st.session_state["user"]
+            del st.session_state["role"]
+            st.rerun()
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    elif st.session_state.show_register:
+        st.markdown('<div class="login-box">', unsafe_allow_html=True)
         st.markdown("### Criar Conta", unsafe_allow_html=True)
         with st.form("register_form"):
             new_user = st.text_input("Novo usuário")
@@ -120,6 +140,8 @@ with col_login:
 
                 if not new_user or not new_pwd or not confirm_pwd or not new_email:
                     st.error("Preencha todos os campos.")
+                elif len(new_pwd) < 6:
+                    st.error("A senha deve ter pelo menos 6 caracteres.")
                 elif new_pwd != confirm_pwd:
                     st.error("As senhas não coincidem.")
                 elif "@" not in new_email or "." not in new_email:
@@ -134,8 +156,10 @@ with col_login:
 
         if st.button("🔙 Voltar ao login"):
             mostrar_login()
+        st.markdown('</div>', unsafe_allow_html=True)
 
     else:
+        st.markdown('<div class="login-box">', unsafe_allow_html=True)
         st.markdown("### Login SafeZone", unsafe_allow_html=True)
         with st.form("login_form", clear_on_submit=False):
             user_in = st.text_input("Usuário", placeholder="seu_usuario")
@@ -150,13 +174,14 @@ with col_login:
                 if users_df.empty:
                     users_df = pd.DataFrame(columns=["nome", "password", "nivel", "email", "data"])
 
-                row = users_df.loc[users_df["nome"] == user_in]
-                if not row.empty:
-                    correct_pwd = str(row.iloc[0]["password"])
+                if user_in in users_df["nome"].values:
+                    row = users_df[users_df["nome"] == user_in].iloc[0]
+                    correct_pwd = str(row["password"])
                     if pwd_in == correct_pwd and captcha_in == st.session_state.captcha_key:
                         st.success(f"Bem-vindo, **{user_in}**!")
                         st.session_state.user = user_in
-                        st.session_state.role = int(row.iloc[0]["nivel"])
+                        st.session_state.role = int(row["nivel"])
+                        st.rerun()
                     else:
                         st.error("Usuário, senha ou captcha incorretos.")
                 else:
@@ -171,7 +196,8 @@ with col_login:
         if st.button("🆕 Criar nova conta"):
             mostrar_cadastro()
 
-    st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
 
 # — Se estiver logado, mostra o conteúdo — 
 if "user" in st.session_state:
